@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { team, site } from "@/lib/site";
+import Photo from "@/components/Photo";
+import Stars from "@/components/Stars";
+import { team, site, images, testimonials } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Über uns",
   description:
-    "Lernen Sie das Team von PhysioVital kennen – erfahrene Physiotherapeutinnen und Therapeuten für Ihre Gesundheit in Berlin.",
+    "Lernen Sie das herzliche Team der Praxis Simone Rammelt in Prenzlauer Berg kennen – kompetente, einfühlsame Physiotherapie mit gutem Gefühl.",
 };
 
 function initials(name: string) {
@@ -13,7 +15,7 @@ function initials(name: string) {
     .split(" ")
     .map((p) => p[0])
     .filter(Boolean)
-    .slice(-2)
+    .slice(0, 2)
     .join("");
 }
 
@@ -25,37 +27,38 @@ export default function AboutPage() {
           <span className="eyebrow">Über uns</span>
           <h1>Menschen, die sich um Sie kümmern</h1>
           <p className="lead" style={{ margin: "0 auto" }}>
-            Seit über 15 Jahren stehen wir für einfühlsame, kompetente
-            Physiotherapie mitten in Berlin.
+            Ein eingespieltes Team mitten in {site.address.district} – mit viel
+            Erfahrung, guter Laune und dem ehrlichen Wunsch, dass es Ihnen besser
+            geht.
           </p>
         </div>
       </section>
 
       <section className="section">
-        <div className="container">
-          <div className="grid grid--2" style={{ alignItems: "center" }}>
-            <div>
-              <span className="eyebrow">Unsere Philosophie</span>
-              <h2>Der Mensch im Mittelpunkt</h2>
-              <p>
-                Bei {site.name} behandeln wir nicht nur Symptome, sondern den ganzen
-                Menschen. Wir nehmen uns Zeit, hören zu und entwickeln ein
-                Therapiekonzept, das wirklich zu Ihnen passt.
-              </p>
-              <p>
-                Moderne Behandlungsmethoden, kontinuierliche Fortbildung und ein
-                herzlicher Umgang – das ist unser Versprechen an Sie. Ihr Wohlbefinden
-                und Ihre Beweglichkeit sind unser gemeinsames Ziel.
-              </p>
-            </div>
-            <div className="hero__card">
-              <h3>Das zeichnet uns aus</h3>
-              <ul className="info-list">
-                <li><span className="ic">✅</span> Ganzheitliche Betrachtung Ihrer Beschwerden</li>
-                <li><span className="ic">✅</span> Zertifizierte Fachtherapeuten</li>
-                <li><span className="ic">✅</span> Modern ausgestattete Behandlungsräume</li>
-                <li><span className="ic">✅</span> Alle gesetzlichen &amp; privaten Kassen</li>
-              </ul>
+        <div className="container split">
+          <div className="split__media">
+            <Photo
+              src={images.practice}
+              alt="Behandlungsraum der Praxis Simone Rammelt"
+              icon="🏥"
+              ratio="4 / 3"
+            />
+          </div>
+          <div className="split__body">
+            <span className="eyebrow">Unsere Philosophie</span>
+            <h2>Der Mensch im Mittelpunkt</h2>
+            <p>
+              Bei uns behandeln wir nicht nur Symptome, sondern den ganzen Menschen.
+              Wir nehmen uns Zeit, hören zu und entwickeln ein Konzept, das wirklich
+              zu Ihnen passt – einfühlsam, kompetent und mit Freude an der Arbeit.
+            </p>
+            <p>
+              Genau das spüren unsere Patient:innen: eine gemütliche, gut
+              ausgestattete Praxis, ein herzliches Miteinander und Behandlungen, die
+              nachhaltig wirken. Ihr Wohlbefinden ist unser gemeinsames Ziel.
+            </p>
+            <div className="center-stars" style={{ justifyContent: "flex-start" }}>
+              <Stars rating={site.rating} count={site.reviewCount} />
             </div>
           </div>
         </div>
@@ -65,7 +68,11 @@ export default function AboutPage() {
         <div className="container">
           <div className="section__head center">
             <span className="eyebrow">Unser Team</span>
-            <h2>Ihre Therapeutinnen &amp; Therapeuten</h2>
+            <h2>Ihre Therapeutinnen &amp; das Praxisteam</h2>
+            <p className="lead">
+              „Alle Kolleginnen sind sehr nett und haben sehr gute Laune, von der ich
+              mich anstecken lasse.&ldquo; – so beschreiben uns unsere Patient:innen.
+            </p>
           </div>
           <div className="grid grid--3">
             {team.map((member) => (
@@ -82,12 +89,27 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Single testimonial highlight */}
+      <section className="section">
+        <div className="container">
+          <figure className="quote-highlight">
+            <div className="quote-card__mark" aria-hidden>&ldquo;</div>
+            <blockquote>{testimonials[2].quote}</blockquote>
+            <figcaption>
+              <strong>{testimonials[2].author}</strong>
+              <span>{testimonials[2].source}</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
       <section className="section">
         <div className="container">
           <div className="cta">
             <h2>Lernen Sie uns persönlich kennen</h2>
             <p className="lead" style={{ margin: "0 auto 1.5rem", color: "rgba(255,255,255,0.85)" }}>
-              Wir freuen uns darauf, Sie in unserer Praxis begrüßen zu dürfen.
+              Wir freuen uns darauf, Sie in unserer Praxis in Prenzlauer Berg
+              begrüßen zu dürfen.
             </p>
             <Link href="/kontakt" className="btn btn--primary">
               Termin vereinbaren

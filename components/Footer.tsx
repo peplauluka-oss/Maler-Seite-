@@ -11,9 +11,9 @@ export default function Footer() {
               <span className="brand__mark" aria-hidden>
                 ✚
               </span>
-              {site.name}
+              <span className="brand__text">Praxis Rammelt</span>
             </div>
-            <p>{site.tagline}. Ihre Praxis für moderne Physiotherapie in Berlin.</p>
+            <p>{site.tagline}. Herzliche Physiotherapie in {site.address.district}, Berlin.</p>
           </div>
 
           <div>
@@ -22,7 +22,8 @@ export default function Footer() {
               <li><Link href="/">Start</Link></li>
               <li><Link href="/leistungen">Leistungen</Link></li>
               <li><Link href="/ueber-uns">Über uns</Link></li>
-              <li><Link href="/kontakt">Kontakt</Link></li>
+              <li><Link href="/karriere">Karriere</Link></li>
+              <li><Link href="/kontakt">Kontakt &amp; Termin</Link></li>
             </ul>
           </div>
 
@@ -31,14 +32,15 @@ export default function Footer() {
             <ul className="footer__links">
               <li>{site.address.street}</li>
               <li>{site.address.city}</li>
-              <li><a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a></li>
+              <li><a href={`tel:${site.phoneHref}`}>{site.phone}</a></li>
               <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
             </ul>
           </div>
         </div>
 
         <div className="footer__bottom">
-          © {new Date().getFullYear()} {site.name} · Alle Rechte vorbehalten ·{" "}
+          © {new Date().getFullYear()} {site.name} · Behandlung nach ärztlicher
+          Verordnung · barrierefreier Zugang ·{" "}
           <Link href="/kontakt">Impressum</Link>
         </div>
       </div>

@@ -5,10 +5,14 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Kontakt & Termin",
   description:
-    "Vereinbaren Sie einen Termin bei PhysioVital in Berlin. Kontaktieren Sie uns telefonisch, per E-Mail oder über unser Anfrageformular.",
+    "Termin vereinbaren bei Physiotherapie Simone Rammelt, Paul-Robeson-Straße 5, 10439 Berlin. Telefon 030 445 39 23. Kontaktformular und Anfahrt.",
 };
 
 export default function ContactPage() {
+  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
+    site.mapQuery
+  )}&output=embed`;
+
   return (
     <>
       <section className="page-header">
@@ -16,8 +20,8 @@ export default function ContactPage() {
           <span className="eyebrow">Kontakt</span>
           <h1>Termin vereinbaren</h1>
           <p className="lead" style={{ margin: "0 auto" }}>
-            Schreiben Sie uns oder rufen Sie an – wir finden gemeinsam den passenden
-            Termin für Sie.
+            Rufen Sie uns an oder schreiben Sie uns – wir melden uns schnell und
+            finden gemeinsam den passenden Termin für Sie.
           </p>
         </div>
       </section>
@@ -35,7 +39,7 @@ export default function ContactPage() {
                     <br />
                     {site.address.street}
                     <br />
-                    {site.address.city}
+                    {site.address.city} ({site.address.district})
                   </span>
                 </li>
                 <li>
@@ -43,7 +47,15 @@ export default function ContactPage() {
                   <span>
                     <strong>Telefon</strong>
                     <br />
-                    <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
+                    <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+                  </span>
+                </li>
+                <li>
+                  <span className="ic">📠</span>
+                  <span>
+                    <strong>Fax</strong>
+                    <br />
+                    {site.fax}
                   </span>
                 </li>
                 <li>
@@ -65,12 +77,31 @@ export default function ContactPage() {
                   </li>
                 ))}
               </ul>
+
+              <p className="form-note" style={{ marginTop: "1rem" }}>
+                Barrierefreier Zugang · Behandlung nach ärztlicher Verordnung ·
+                Hausbesuche im näheren Umkreis nach Vereinbarung.
+              </p>
             </div>
 
             <div className="hero__card">
               <h3>Terminanfrage</h3>
               <BookingForm />
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--muted" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="map-wrap">
+            <iframe
+              title="Anfahrt zur Praxis Simone Rammelt"
+              src={mapSrc}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
           </div>
         </div>
       </section>

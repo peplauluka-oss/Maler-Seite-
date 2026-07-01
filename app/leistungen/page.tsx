@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { services } from "@/lib/site";
+import Photo from "@/components/Photo";
+import { services, images, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Leistungen",
   description:
-    "Unsere physiotherapeutischen Leistungen: Manuelle Therapie, Krankengymnastik, Massage, Lymphdrainage, Sportphysiotherapie und Wärmetherapie.",
+    "Unsere Leistungen: Manuelle Therapie, Marnitz-Therapie, Krankengymnastik, Lymphdrainage, Hot-Stone- & klassische Massage, Dorn, Brügger, Bobath, Wärme- und Elektrotherapie sowie Hausbesuche.",
 };
 
 export default function ServicesPage() {
@@ -16,8 +17,9 @@ export default function ServicesPage() {
           <span className="eyebrow">Unsere Leistungen</span>
           <h1>Behandlungen &amp; Therapien</h1>
           <p className="lead" style={{ margin: "0 auto" }}>
-            Ein umfassendes Angebot für Ihre Gesundheit – abgestimmt auf Ihre
-            individuellen Bedürfnisse.
+            Ein breites Spektrum aus Physiotherapie, manuellen Techniken und
+            wohltuenden Anwendungen – individuell auf Sie abgestimmt und nach
+            ärztlicher Verordnung.
           </p>
         </div>
       </section>
@@ -38,16 +40,42 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      <section className="section section--muted">
+        <div className="container split">
+          <div className="split__media">
+            <Photo
+              src={images.massage}
+              alt="Wohltuende Massage in der Praxis Rammelt"
+              icon="💆"
+              ratio="4 / 3"
+            />
+          </div>
+          <div className="split__body">
+            <span className="eyebrow">Gut zu wissen</span>
+            <h2>Für alle Kassen &amp; privat</h2>
+            <ul className="check-list">
+              <li>Wir behandeln nach ärztlicher Verordnung (Rezept).</li>
+              <li>Gesetzliche und private Krankenkassen sowie Selbstzahler:innen.</li>
+              <li>Barrierefreier Zugang zur Praxis.</li>
+              <li>Hausbesuche im näheren Umkreis nach Vereinbarung.</li>
+            </ul>
+            <Link href="/kontakt" className="btn btn--primary">
+              Termin anfragen
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="section section--teal">
         <div className="container center">
           <h2>Nicht sicher, welche Behandlung passt?</h2>
           <p className="lead" style={{ margin: "0 auto 1.5rem" }}>
-            In einem persönlichen Erstgespräch finden wir gemeinsam die richtige
+            Rufen Sie uns an – wir beraten Sie gern und finden gemeinsam die richtige
             Therapie für Sie.
           </p>
-          <Link href="/kontakt" className="btn btn--primary">
-            Beratungstermin anfragen
-          </Link>
+          <a href={`tel:${site.phoneHref}`} className="btn btn--primary">
+            📞 {site.phone}
+          </a>
         </div>
       </section>
     </>

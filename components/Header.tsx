@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { site } from "@/lib/site";
 
 const links = [
   { href: "/", label: "Start" },
   { href: "/leistungen", label: "Leistungen" },
   { href: "/ueber-uns", label: "Über uns" },
+  { href: "/karriere", label: "Karriere" },
   { href: "/kontakt", label: "Kontakt" },
 ];
 
@@ -21,7 +21,9 @@ export default function Header() {
           <span className="brand__mark" aria-hidden>
             ✚
           </span>
-          {site.name}
+          <span className="brand__text">
+            Praxis <strong>Rammelt</strong>
+          </span>
         </Link>
 
         <button
