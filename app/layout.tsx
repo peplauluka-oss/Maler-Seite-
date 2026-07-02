@@ -64,6 +64,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de" className={`${sora.variable} ${inter.variable}`}>
       <body>
+        <noscript>
+          <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
+        </noscript>
         <SmoothScroll />
         <ScrollProgress />
         <Header />

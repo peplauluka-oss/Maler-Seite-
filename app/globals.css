@@ -508,3 +508,137 @@ strong { color: var(--text); font-weight: 700; }
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1 !important; transform: none !important; }
 }
+
+/* ============================================================
+   STARTSEITE – Cinematische Scroll-Journey (Vollbild-Snap)
+   ============================================================ */
+
+/* Snap nur auf der Startseite aktivieren (via :has) */
+html:has(.home) { scroll-snap-type: y mandatory; background: #0b0c10; }
+/* Fußzeile auf der Startseite ausblenden – der CTA-Panel schließt ab.
+   Das JSON-LD-Script bleibt im DOM (SEO unberührt). */
+html:has(.home) footer.footer { display: none; }
+
+.home { position: relative; }
+
+/* Fixe, bildschirmfüllende 3D-Bühne */
+.journey-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.journey-canvas canvas { width: 100% !important; height: 100% !important; display: block; }
+
+/* Panels */
+.panel {
+  position: relative; z-index: 1;
+  min-height: 100vh; min-height: 100svh;
+  display: flex; align-items: center;
+  scroll-snap-align: start;
+  padding: 6.5rem 0 5rem;
+  overflow: hidden;
+}
+/* Lesbarkeits-Schleier hinter dem Text (links betont, 3D bleibt rechts frei) */
+.panel::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(120% 95% at 24% 50%, rgba(11,12,16,0.92) 0%, rgba(11,12,16,0.5) 40%, rgba(11,12,16,0.08) 66%, transparent 82%);
+}
+.panel--cta::before { background: radial-gradient(120% 90% at 50% 55%, rgba(11,12,16,0.92) 0%, rgba(11,12,16,0.55) 52%, transparent 92%); }
+
+.panel__in { position: relative; max-width: 44rem; }
+.panel__in--wide { max-width: var(--max); width: 100%; }
+.panel--cta .panel__in { max-width: 46rem; margin-inline: auto; text-align: center; }
+.panel--cta .trustrow, .panel--cta .panel__cta { justify-content: center; }
+
+.panel__title { font-size: clamp(2.6rem, 7.5vw, 5.4rem); line-height: 1.02; margin-bottom: 1.3rem; }
+.panel__title--sm { font-size: clamp(2rem, 4.5vw, 3.4rem); }
+.panel__lead { font-size: clamp(1.08rem, 1.9vw, 1.4rem); color: var(--text-soft); max-width: 46ch; margin-bottom: 0; }
+.panel__cta { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2.1rem; }
+.panel .trustrow { margin-top: 2.2rem; }
+
+/* Scroll-Hinweis im Hero */
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: clamp(1.1rem, 4vw, 2.2rem);
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--display); font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+}
+.scroll-hint span { display: inline-block; animation: bob 1.6s var(--ease) infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+/* Stat-Zeile (Story-Panel) */
+.statline { display: flex; flex-wrap: wrap; gap: clamp(1.6rem, 4vw, 3.4rem); margin-top: 2.6rem; }
+.statline__it b { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); color: var(--copper-bright); line-height: 1; }
+.statline__it span { font-size: 0.9rem; color: var(--muted); }
+
+/* Abschnitts-Fortschritt (rechts) */
+.secprog {
+  position: fixed; right: clamp(0.8rem, 2vw, 1.6rem); top: 50%; transform: translateY(-50%);
+  z-index: 90; display: flex; flex-direction: column; gap: 0.9rem;
+}
+.secprog__dot {
+  position: relative; width: 11px; height: 11px; border-radius: 50%; padding: 0; cursor: pointer;
+  background: transparent; border: 1.5px solid var(--line-strong); transition: border-color 0.3s, transform 0.3s;
+}
+.secprog__dot--active { border-color: var(--copper-bright); background: var(--copper-bright); transform: scale(1.25); box-shadow: 0 0 14px var(--amber-glow); }
+.secprog__dot:hover { border-color: var(--copper); }
+.secprog__label {
+  position: absolute; right: 22px; top: 50%; transform: translateY(-50%) translateX(6px);
+  white-space: nowrap; font-family: var(--display); font-size: 0.72rem; color: var(--text-soft);
+  background: rgba(11,12,16,0.75); border: 1px solid var(--line); border-radius: var(--radius-pill);
+  padding: 0.25rem 0.7rem; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s;
+  backdrop-filter: blur(6px);
+}
+.secprog__dot:hover .secprog__label, .secprog__dot--active .secprog__label { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+/* Leistungs-Swipe-Deck */
+.swiper { margin-top: 2rem; }
+.swiper__vp { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 0.5rem; }
+.swiper__vp::-webkit-scrollbar { display: none; }
+.swiper__track { display: flex; gap: 20px; }
+.sw-card {
+  flex: 0 0 auto; width: min(340px, 78vw); scroll-snap-align: start;
+  background: linear-gradient(165deg, rgba(30,34,44,0.92), rgba(20,22,29,0.92));
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem 1.8rem;
+  backdrop-filter: blur(12px); position: relative; overflow: hidden; min-height: 300px;
+  display: flex; flex-direction: column;
+}
+.sw-card__num { position: absolute; top: 1.1rem; right: 1.3rem; font-family: var(--display); font-weight: 800; font-size: 2.4rem; color: transparent; -webkit-text-stroke: 1.2px var(--copper-deep); opacity: 0.5; }
+.sw-card__icon { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; font-size: 1.6rem; margin-bottom: 1.1rem; background: linear-gradient(150deg, rgba(224,168,106,0.22), rgba(224,168,106,0.05)); border: 1px solid rgba(224,168,106,0.26); }
+.sw-card h3 { margin-bottom: 0.5rem; }
+.sw-card p { font-size: 0.96rem; flex: 1; }
+.sw-card__link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--copper-bright); font-family: var(--display); font-weight: 600; font-size: 0.92rem; margin-top: 0.8rem; }
+.sw-card__link span { transition: transform 0.3s var(--ease); }
+.sw-card:hover .sw-card__link span { transform: translateX(5px); }
+.swiper__ctrl { display: flex; gap: 0.6rem; align-items: center; margin-top: 1.4rem; }
+
+/* Farrow & Ball Panel */
+.fb-split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+.fb-swatches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+.fb-swatch { aspect-ratio: 3 / 2; border-radius: 18px; border: 1px solid rgba(255,255,255,0.14); position: relative; box-shadow: var(--shadow); display: flex; align-items: flex-end; padding: 0.9rem; }
+.fb-swatch span { font-family: var(--display); font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.92); text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+
+/* FAQ als aufklappbares Detail im CTA-Panel */
+.home-faq { margin-top: 2rem; text-align: left; max-width: 52rem; margin-inline: auto; }
+.home-faq > summary { cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--display); font-weight: 600; color: var(--copper-bright); list-style: none; justify-content: center; width: 100%; }
+.home-faq > summary::-webkit-details-marker { display: none; }
+.home-faq > summary::after { content: "＋"; }
+.home-faq[open] > summary::after { content: "－"; }
+
+@media (max-width: 860px) {
+  .fb-split { grid-template-columns: 1fr; }
+  .fb-swatches { grid-template-columns: repeat(2, 1fr); max-width: 360px; }
+  .secprog { right: 0.5rem; gap: 0.7rem; }
+  .secprog__label { display: none; }
+  .panel { padding: 6rem 0 5.5rem; }
+  .scroll-hint { left: 50%; transform: translateX(-50%); }
+}
+
+/* Handy: 3D-Objekt oben, Text unten – Schleier vertikal (3D klar sichtbar) */
+@media (max-width: 720px) {
+  .panel { align-items: flex-end; padding-bottom: 6rem; }
+  .panel::before {
+    background: linear-gradient(180deg, transparent 0%, rgba(11,12,16,0.35) 34%, rgba(11,12,16,0.82) 60%, rgba(11,12,16,0.96) 100%);
+  }
+  .panel--cta { align-items: center; }
+  .panel--cta::before { background: radial-gradient(130% 80% at 50% 60%, rgba(11,12,16,0.9) 0%, rgba(11,12,16,0.6) 55%, rgba(11,12,16,0.3) 100%); }
+  .panel__title { font-size: clamp(2.4rem, 11vw, 3.6rem); }
+  .panel__lead { font-size: 1.02rem; }
+  .scroll-hint { display: none; } /* würde sonst mit der Trust-Zeile kollidieren */
+  .panel--hero .panel__in { padding-bottom: 0.5rem; }
+}
