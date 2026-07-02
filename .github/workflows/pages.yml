@@ -1,9 +1,14 @@
 name: Deploy to GitHub Pages
 
+# Kombiniertes Deployment: Physio-Seite bleibt an der Wurzel
+# (…/Physio-Websiten/), die Maler-Seite kommt in den Unterpfad
+# (…/Physio-Websiten/maler-heusser/). Beide werden in EIN Pages-Artefakt
+# gebaut und gemeinsam veröffentlicht.
+
 on:
   push:
     branches:
-      - main
+      - claude/heusser-maler-berlin-relaunch-374x66
   workflow_dispatch:
 
 permissions:
@@ -19,19 +24,47 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # ---- Maler-Seite (Unterpfad /maler-heusser) ----
+      - name: Checkout Maler-Branch
+        uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-      - run: npm ci
-      - name: Build static site
+      - name: Maler-Abhängigkeiten
+        run: npm ci
+      - name: Maler-Seite bauen (Unterpfad)
         env:
           GITHUB_PAGES: "true"
+          PAGES_BASE_PATH: "/Physio-Websiten/maler-heusser"
         run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+      - name: Maler-Output einsammeln
+        run: |
+          mkdir -p combined/maler-heusser
+          cp -r out/. combined/maler-heusser/
+          rm -rf out .next
+
+      # ---- Physio-Seite (Wurzel) ----
+      - name: Checkout Physio-Branch
+        uses: actions/checkout@v4
         with:
-          path: ./out
+          ref: claude/physio-websiten-init-lr1lnm
+          path: physio-src
+      - name: Physio bauen (Wurzel)
+        working-directory: physio-src
+        env:
+          GITHUB_PAGES: "true"
+        run: |
+          npm ci
+          npm run build
+      - name: Physio-Output an die Wurzel
+        run: |
+          cp -r physio-src/out/. combined/
+          touch combined/.nojekyll
+
+      - name: Artefakt hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./combined
 
   deploy:
     needs: build
