@@ -3,6 +3,7 @@ import Link from "next/link";
 import Photo from "@/components/Photo";
 import Stars from "@/components/Stars";
 import Reveal from "@/components/Reveal";
+import SceneBackground from "@/components/SceneBackground";
 import { team, site, images, testimonials } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -22,7 +23,8 @@ function initials(name: string) {
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="subpage">
+      <SceneBackground />
       <section className="page-header">
         <span className="orb orb--rose" />
         <span className="orb orb--sage" />
@@ -127,6 +129,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

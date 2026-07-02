@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Photo from "@/components/Photo";
 import Reveal from "@/components/Reveal";
+import SceneBackground from "@/components/SceneBackground";
 import { services, images, site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -12,7 +13,8 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <>
+    <div className="subpage">
+      <SceneBackground />
       <section className="page-header">
         <span className="orb orb--rose" />
         <span className="orb orb--sage" />
@@ -85,6 +87,6 @@ export default function ServicesPage() {
           </a>
         </div>
       </section>
-    </>
+    </div>
   );
 }

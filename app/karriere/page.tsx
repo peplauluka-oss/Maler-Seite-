@@ -3,6 +3,7 @@ import Link from "next/link";
 import Photo from "@/components/Photo";
 import Reveal from "@/components/Reveal";
 import ApplicationForm from "@/components/ApplicationForm";
+import SceneBackground from "@/components/SceneBackground";
 import { career, site, team, images, testimonials } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
 
 export default function CareerPage() {
   return (
-    <>
+    <div className="subpage">
+      <SceneBackground />
       {/* Hero */}
       <section className="career-hero">
         <span className="orb orb--rose" />
@@ -204,6 +206,6 @@ export default function CareerPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

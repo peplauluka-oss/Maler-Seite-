@@ -1098,3 +1098,28 @@ html[data-theme="cozy"] .floral-decor {
 .floral-decor .fl-2 { bottom: 10%; right: 4%; width: 150px; transform: rotate(8deg); }
 .floral-decor .fl-3 { top: 20%; right: 8%; width: 70px; opacity: 0.4; }
 html[data-theme="cozy"] .floral-decor svg { opacity: 0.4; }
+
+/* ============================================================
+   Durchgehendes 3D auf Unterseiten (dezent hinter dem Inhalt)
+   ============================================================ */
+.subpage-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.subpage-bg canvas { display: block; }
+
+.subpage { position: relative; z-index: 1; }
+
+/* Sektionen leicht durchscheinend, damit das 3D dezent begleitet.
+   Karten/Formulare bleiben deckend und damit gut lesbar. */
+.subpage .page-header { background: color-mix(in srgb, var(--cream) 55%, transparent); }
+.subpage .section--cream { background: color-mix(in srgb, var(--cream) 82%, transparent); }
+.subpage .section--sand { background: color-mix(in srgb, var(--sand) 84%, transparent); }
+.subpage .section--sage { background: color-mix(in srgb, var(--sage-soft) 84%, transparent); }
+.subpage .section--blush { background: color-mix(in srgb, var(--blush) 80%, transparent); }
+
+/* etwas kräftigeres 3D im dunklen Theme (Glow verträgt es) */
+html[data-theme="cinematic"] .subpage-bg { opacity: 0.6; }

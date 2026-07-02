@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BookingForm from "@/components/BookingForm";
+import SceneBackground from "@/components/SceneBackground";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,7 +15,8 @@ export default function ContactPage() {
   )}&output=embed`;
 
   return (
-    <>
+    <div className="subpage">
+      <SceneBackground />
       <section className="page-header">
         <span className="orb orb--rose" />
         <span className="orb orb--sage" />
@@ -107,6 +109,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
