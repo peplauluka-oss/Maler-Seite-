@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { asset } from "@/lib/asset";
 
 type Props = {
   src: string;
@@ -39,7 +40,7 @@ export default function Photo({
       {status !== "fail" && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={src}
+          src={asset(src)}
           alt={alt}
           loading="lazy"
           data-state={status}
