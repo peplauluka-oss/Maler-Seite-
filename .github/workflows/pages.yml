@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - claude/physio-websiten-init-lr1lnm
+      - main
   workflow_dispatch:
 
 permissions:
