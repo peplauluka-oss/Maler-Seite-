@@ -1,140 +1,124 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Photo from "@/components/Photo";
-import Stars from "@/components/Stars";
+import { site, process } from "@/lib/site";
 import Reveal from "@/components/Reveal";
-import SceneBackground from "@/components/SceneBackground";
-import { asset } from "@/lib/asset";
-import { team, site, images, testimonials } from "@/lib/site";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import CtaBanner from "@/components/CtaBanner";
 
 export const metadata: Metadata = {
-  title: "Über uns",
+  title: { absolute: "Über uns – Meisterbetrieb für Maler in Berlin | Heußer" },
   description:
-    "Lernen Sie das herzliche Team der Praxis Simone Rammelt in Prenzlauer Berg kennen – kompetente, einfühlsame Physiotherapie mit gutem Gefühl.",
+    "Malermeister Heußer: über 23 Jahre Erfahrung, Meisterbetrieb aus Berlin. Erfahren Sie, wofür wir stehen – Qualität, Sauberkeit, Termintreue und denkmalgerechtes Handwerk.",
+  alternates: { canonical: "/ueber-uns" },
 };
 
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((p) => p[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("");
-}
+const values = [
+  { icon: "🎓", title: "Meisterqualität", text: "Als eingetragener Meisterbetrieb haften wir für unsere Arbeit – geprüftes Handwerk statt Kolonne." },
+  { icon: "🧹", title: "Sauberkeit", text: "Sorgfältig abgedeckt, jeden Abend aufgeräumt, besenreine Übergabe. Ihr Zuhause bleibt Ihr Zuhause." },
+  { icon: "⏱️", title: "Termintreue", text: "Vereinbarte Termine halten wir ein. Verlässlichkeit ist bei uns keine Floskel, sondern Standard." },
+  { icon: "💶", title: "Festpreis", text: "Ein verbindliches Angebot nach Besichtigung – keine bösen Überraschungen am Ende." },
+  { icon: "🏛️", title: "Altbau-Erfahrung", text: "Denkmalgerechtes Arbeiten an Berlins historischer Bausubstanz – vom Stuck bis zur Fassade." },
+  { icon: "🎨", title: "Farrow & Ball", text: "Als Partner arbeiten wir mit Premium-Farben und beraten Sie zu stimmigen Farbkonzepten." },
+];
 
-export default function AboutPage() {
+export default function UeberUns() {
   return (
-    <div className="subpage">
-      <SceneBackground />
+    <>
       <section className="page-header">
-        <span className="orb orb--rose" />
-        <span className="orb orb--sage" />
         <div className="container">
-          <span className="eyebrow">Über uns</span>
-          <h1>Frauen, die sich um Sie kümmern</h1>
-          <p className="lead" style={{ margin: "0 auto" }}>
-            Ein eingespieltes Frauen-Team mitten in {site.address.district} – mit viel
-            Erfahrung, guter Laune und dem ehrlichen Wunsch, dass es Ihnen besser geht.
-          </p>
-        </div>
-      </section>
-
-      <section className="section section--cream">
-        <div className="container split">
-          <div className="split__media">
-            <Reveal>
-              <Photo
-                src={images.practice}
-                alt="Behandlungsraum der Praxis Simone Rammelt"
-                icon="🕯️"
-                ratio="4 / 3"
-              />
-            </Reveal>
-          </div>
-          <div className="split__body">
-            <span className="eyebrow">Unsere Philosophie</span>
-            <h2>Der Mensch im Mittelpunkt</h2>
-            <p>
-              Bei uns behandeln wir nicht nur Symptome, sondern den ganzen Menschen.
-              Wir nehmen uns Zeit, hören zu und entwickeln ein Konzept, das wirklich
-              zu Ihnen passt – einfühlsam, kompetent und mit Freude an der Arbeit.
+          <Breadcrumbs items={[{ name: "Start", url: "/" }, { name: "Über uns", url: "/ueber-uns" }]} />
+          <Reveal><span className="eyebrow">Meisterbetrieb · Berlin</span></Reveal>
+          <Reveal delay={80}><h1>Handwerk mit Anspruch – seit über {site.experienceYears} Jahren</h1></Reveal>
+          <Reveal delay={160}>
+            <p className="lead">
+              Malermeister Heußer ist ein Berliner Meisterbetrieb mit Geschäftsstellen in
+              Niederschönhausen und Köpenick. Wir stehen für sauberes, ehrliches Handwerk –
+              von der denkmalgerechten Altbausanierung bis zum edlen Farbkonzept.
             </p>
-            <p>
-              Genau das spüren unsere Patient:innen: eine gemütliche, gut
-              ausgestattete Praxis, ein herzliches Miteinander und Behandlungen, die
-              nachhaltig wirken. Ihr Wohlbefinden ist unser gemeinsames Ziel.
-            </p>
-            <div className="center-stars" style={{ justifyContent: "flex-start" }}>
-              <Stars rating={site.rating} count={site.reviewCount} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--blush">
-        <div className="container">
-          <Reveal>
-            <div className="section__head center">
-              <span className="eyebrow">Unser Team</span>
-              <h2>Ihre Therapeutinnen &amp; das Praxisteam</h2>
-              <p className="lead">
-                „Alle Kolleginnen sind sehr nett und haben sehr gute Laune, von der ich
-                mich anstecken lasse.&ldquo; – so beschreiben uns unsere Patientinnen.
-              </p>
-            </div>
-          </Reveal>
-          <div className="grid grid--3">
-            {team.map((member, i) => (
-              <Reveal key={member.name} delay={(i % 3) * 90}>
-                <article className="card team-card">
-                  <div className="avatar" aria-hidden={!member.photo}>
-                    {member.photo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img className="avatar__img" src={asset(member.photo)} alt={member.name} />
-                    ) : (
-                      initials(member.name)
-                    )}
-                  </div>
-                  <h3>{member.name}</h3>
-                  <p className="role">{member.role}</p>
-                  <p>{member.bio}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Single testimonial highlight */}
-      <section className="section">
-        <div className="container">
-          <Reveal>
-            <figure className="quote-highlight">
-              <div className="quote-card__mark" aria-hidden>&ldquo;</div>
-              <blockquote>{testimonials[2].quote}</blockquote>
-              <figcaption>
-                <strong>{testimonials[2].author}</strong>
-                <span>{testimonials[2].source}</span>
-              </figcaption>
-            </figure>
           </Reveal>
         </div>
       </section>
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
-          <div className="cta">
-            <h2>Lernen Sie uns persönlich kennen</h2>
-            <p className="lead" style={{ margin: "0 auto 1.5rem", color: "rgba(255,255,255,0.85)" }}>
-              Wir freuen uns darauf, Sie in unserer Praxis in Prenzlauer Berg
-              begrüßen zu dürfen.
-            </p>
-            <Link href="/kontakt" className="btn btn--primary">
-              Termin vereinbaren
-            </Link>
+          <div className="split">
+            <div>
+              <Reveal><span className="eyebrow">Unsere Geschichte</span></Reveal>
+              <Reveal delay={80}><h2>Aus Leidenschaft für Farbe und Substanz</h2></Reveal>
+              <Reveal delay={140}>
+                <p>
+                  Seit über zwei Jahrzehnten geben wir Berliner Gebäuden neuen Glanz. In dieser Zeit
+                  haben wir hunderte Fassaden saniert, Altbauwohnungen mit Farrow-&-Ball-Farben veredelt,
+                  Stuck restauriert und Gewerbeflächen ohne Betriebsunterbrechung renoviert.
+                </p>
+              </Reveal>
+              <Reveal delay={200}>
+                <p>
+                  Was uns geblieben ist: der Anspruch, jede Arbeit so auszuführen, als wäre es unser
+                  eigenes Zuhause. Das bestätigen 74 Google-Bewertungen mit einem Schnitt von {site.rating.toString().replace(".", ",")}
+                  &nbsp;Sternen – und die vielen Kunden, die uns weiterempfehlen.
+                </p>
+              </Reveal>
+              <Reveal delay={240}>
+                <Link href="/kontakt" className="btn btn--primary" style={{ marginTop: "0.6rem" }}>Lernen Sie uns kennen</Link>
+              </Reveal>
+            </div>
+            <div>
+              <Reveal delay={120}>
+                <div className="stats" style={{ gridTemplateColumns: "repeat(2,1fr)" }}>
+                  <div className="stat"><div className="stat__num">{site.experienceYears}+</div><div className="stat__label">Jahre Erfahrung</div></div>
+                  <div className="stat"><div className="stat__num">{site.rating.toString().replace(".", ",")}★</div><div className="stat__label">Google-Rating</div></div>
+                  <div className="stat"><div className="stat__num">{site.reviewCount}</div><div className="stat__label">Bewertungen</div></div>
+                  <div className="stat"><div className="stat__num">100 %</div><div className="stat__label">Festpreis</div></div>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
-    </div>
+
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="section__head">
+            <Reveal><span className="eyebrow">Wofür wir stehen</span></Reveal>
+            <Reveal delay={80}><h2>Sechs Versprechen an jeden Kunden</h2></Reveal>
+          </div>
+          <div className="cards">
+            {values.map((v, i) => (
+              <Reveal key={v.title} delay={i * 60}>
+                <div className="card">
+                  <div className="card__icon" aria-hidden>{v.icon}</div>
+                  <h3>{v.title}</h3>
+                  <p>{v.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="section__head center">
+            <Reveal><span className="eyebrow" style={{ justifyContent: "center" }}>So arbeiten wir</span></Reveal>
+            <Reveal delay={80}><h2>In 3 Schritten zum Ergebnis</h2></Reveal>
+          </div>
+          <div className="process">
+            {process.map((p, i) => (
+              <Reveal key={p.step} delay={i * 90}>
+                <div className="process__step glass">
+                  <div className="process__num">{p.step}</div>
+                  <div className="process__icon" aria-hidden>{p.icon}</div>
+                  <h3>{p.title}</h3>
+                  <p>{p.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <CtaBanner />
+    </>
   );
 }

@@ -1,114 +1,102 @@
 import type { Metadata } from "next";
-import BookingForm from "@/components/BookingForm";
-import SceneBackground from "@/components/SceneBackground";
-import { site } from "@/lib/site";
+import { site, whatsappLink } from "@/lib/site";
+import QuoteForm from "@/components/QuoteForm";
+import Reveal from "@/components/Reveal";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Kontakt & Termin",
+  title: { absolute: "Kontakt & kostenloses Angebot | Malermeister Heußer Berlin" },
   description:
-    "Termin vereinbaren bei Physiotherapie Simone Rammelt, Paul-Robeson-Straße 5, 10439 Berlin. Telefon 030 445 39 23. Kontaktformular und Anfahrt.",
+    "Kontakt zu Malermeister Heußer in Berlin: Telefon 030 98 56 15 13, WhatsApp oder Formular. Kostenloses Angebot in 24 Stunden – für Fassade, Wohnung, Altbau & Gewerbe.",
+  alternates: { canonical: "/kontakt" },
 };
 
-export default function ContactPage() {
-  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
-    site.mapQuery
-  )}&output=embed`;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.mapQuery)}`;
 
+export default function Kontakt() {
   return (
-    <div className="subpage">
-      <SceneBackground />
+    <>
       <section className="page-header">
-        <span className="orb orb--rose" />
-        <span className="orb orb--sage" />
         <div className="container">
-          <span className="eyebrow">Kontakt</span>
-          <h1>Wir freuen uns auf Sie</h1>
-          <p className="lead" style={{ margin: "0 auto" }}>
-            Rufen Sie uns an oder schreiben Sie uns – wir melden uns schnell und
-            finden gemeinsam einen Termin, der sich für Sie gut anfühlt.
-          </p>
+          <Breadcrumbs items={[{ name: "Start", url: "/" }, { name: "Kontakt", url: "/kontakt" }]} />
+          <Reveal><span className="eyebrow">Kontakt</span></Reveal>
+          <Reveal delay={80}><h1>Kostenloses Angebot in 24 Stunden</h1></Reveal>
+          <Reveal delay={160}>
+            <p className="lead">
+              Rufen Sie an, schreiben Sie per WhatsApp oder füllen Sie das kurze Formular aus.
+              Wir melden uns schnell mit einer ersten Einschätzung und einem Termin zur kostenlosen Besichtigung.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
-          <div className="contact-grid">
+          <div className="quote">
             <div>
-              <h2>So erreichen Sie uns</h2>
-              <ul className="info-list">
-                <li>
-                  <span className="ic">📍</span>
-                  <span>
-                    <strong>Adresse</strong>
-                    <br />
-                    {site.address.street}
-                    <br />
-                    {site.address.city} ({site.address.district})
-                  </span>
-                </li>
-                <li>
-                  <span className="ic">📞</span>
-                  <span>
-                    <strong>Telefon</strong>
-                    <br />
-                    <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
-                  </span>
-                </li>
-                <li>
-                  <span className="ic">📠</span>
-                  <span>
-                    <strong>Fax</strong>
-                    <br />
-                    {site.fax}
-                  </span>
-                </li>
-                <li>
-                  <span className="ic">✉️</span>
-                  <span>
-                    <strong>E-Mail</strong>
-                    <br />
-                    <a href={`mailto:${site.email}`}>{site.email}</a>
-                  </span>
-                </li>
-              </ul>
-
-              <h3 style={{ marginTop: "1.5rem" }}>Öffnungszeiten</h3>
-              <ul className="hours-list">
-                {site.hours.map((h) => (
-                  <li key={h.day}>
-                    <span>{h.day}</span>
-                    <span>{h.time}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <p className="form-note" style={{ marginTop: "1rem" }}>
-                Barrierefreier Zugang · Behandlung nach ärztlicher Verordnung ·
-                Hausbesuche im näheren Umkreis nach Vereinbarung.
-              </p>
+              <Reveal>
+                <div className="glass" style={{ padding: "2rem", marginBottom: "1.3rem" }}>
+                  <h3 style={{ marginBottom: "0.4rem" }}>So erreichen Sie uns</h3>
+                  <ul className="info-list">
+                    <li>
+                      <span className="ic" aria-hidden>☎</span>
+                      <span>
+                        <strong style={{ display: "block", color: "var(--text)", fontFamily: "var(--display)" }}>Telefon</strong>
+                        <a href={`tel:${site.phoneHref}`}>{site.phone}</a><br />
+                        <a href={`tel:${site.mobileHref}`}>{site.mobile}</a> (mobil)
+                      </span>
+                    </li>
+                    <li>
+                      <span className="ic" aria-hidden>✆</span>
+                      <span>
+                        <strong style={{ display: "block", color: "var(--text)", fontFamily: "var(--display)" }}>WhatsApp</strong>
+                        <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">Nachricht schreiben</a>
+                      </span>
+                    </li>
+                    <li>
+                      <span className="ic" aria-hidden>✉</span>
+                      <span>
+                        <strong style={{ display: "block", color: "var(--text)", fontFamily: "var(--display)" }}>E-Mail</strong>
+                        <a href={`mailto:${site.email}`}>{site.email}</a>
+                      </span>
+                    </li>
+                    <li>
+                      <span className="ic" aria-hidden>📍</span>
+                      <span>
+                        <strong style={{ display: "block", color: "var(--text)", fontFamily: "var(--display)" }}>Geschäftsstellen</strong>
+                        {site.address.district} &amp; {site.branch.district}, Berlin<br />
+                        <a href={mapsUrl} target="_blank" rel="noopener noreferrer">Auf Google Maps ansehen</a>
+                      </span>
+                    </li>
+                    <li>
+                      <span className="ic" aria-hidden>🕑</span>
+                      <span>
+                        <strong style={{ display: "block", color: "var(--text)", fontFamily: "var(--display)" }}>Öffnungszeiten</strong>
+                        {site.hours.map((h) => (
+                          <span key={h.day} style={{ display: "block", fontSize: "0.92rem" }}>{h.day}: {h.time}</span>
+                        ))}
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </Reveal>
+              <Reveal delay={80}>
+                <div className="glass" style={{ padding: "1.3rem 1.6rem" }}>
+                  <strong style={{ color: "var(--copper-bright)", fontFamily: "var(--display)" }}>Einsatzgebiet:</strong>{" "}
+                  <span style={{ color: "var(--text-soft)" }}>ganz Berlin &amp; Umland – von Mitte über Prenzlauer Berg bis Köpenick.</span>
+                </div>
+              </Reveal>
             </div>
 
-            <div className="hero__card">
-              <h3>Terminanfrage</h3>
-              <BookingForm />
+            <div>
+              <Reveal delay={120}>
+                <h2 style={{ marginBottom: "1.2rem" }}>Angebot anfordern</h2>
+                <QuoteForm />
+              </Reveal>
             </div>
           </div>
         </div>
       </section>
-
-      <section className="section section--blush" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <div className="map-wrap">
-            <iframe
-              title="Anfahrt zur Praxis Simone Rammelt"
-              src={mapSrc}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      </section>
-    </div>
+    </>
   );
 }

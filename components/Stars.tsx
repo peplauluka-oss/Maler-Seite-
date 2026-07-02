@@ -1,27 +1,24 @@
-type Props = {
-  rating: number;
-  count?: number;
-};
-
-/** Sternebewertung als reines, zugängliches SVG (0–5, halbe Sterne möglich). */
-export default function Stars({ rating, count }: Props) {
-  const pct = Math.max(0, Math.min(100, (rating / 5) * 100));
-  const label = count
-    ? `${rating.toFixed(1)} von 5 Sternen bei ${count} Bewertungen`
-    : `${rating.toFixed(1)} von 5 Sternen`;
-
+/** Sterne-Rating als barrierefreie Grafik. */
+export default function Stars({ value = 5, label }: { value?: number; label?: string }) {
+  const full = Math.floor(value);
+  const stars = Array.from({ length: 5 }, (_, i) => (i < full ? "★" : "☆"));
   return (
-    <span className="stars" role="img" aria-label={label}>
-      <span className="stars__track" aria-hidden>
-        <span className="stars__fill" style={{ width: `${pct}%` }}>
-          ★★★★★
-        </span>
-        ★★★★★
+    <span className="stars" role="img" aria-label={label ?? `${value} von 5 Sternen`}>
+      {stars.map((s, i) => (
+        <span key={i} aria-hidden>{s}</span>
+      ))}
+    </span>
+  );
+}
+
+/** Google-Bewertungs-Badge mit farbigem „Google"-Schriftzug. */
+export function GoogleBadge() {
+  return (
+    <span className="gbadge">
+      <span className="gbadge__g" aria-hidden>
+        <b>G</b><b>o</b><b>o</b><b>g</b><b>l</b><b>e</b>
       </span>
-      <span className="stars__meta">
-        <strong>{rating.toFixed(1)}</strong>
-        {count ? ` · ${count} Google-Bewertungen` : ""}
-      </span>
+      Bewertung
     </span>
   );
 }

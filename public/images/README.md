@@ -1,17 +1,26 @@
-# Praxis-Fotos hier ablegen
+# Projektfotos – Malermeister Heußer
 
-Echte Fotos der Praxis in diesen Ordner legen (JPG/PNG/WebP, ca. 1200 px breit).
-Danach werden sie in `lib/site.ts` referenziert (z. B. `/images/team.jpg`).
+Hier liegen die Bilder der Website. Bis echte Projektfotos vorliegen, zeigt die
+`Photo`-Komponente einen dezenten Kupfer-Verlauf mit Icon – nichts wirkt „kaputt".
 
-Empfohlene Dateien (Namen frei wählbar):
+## Erwartete Dateinamen (SEO-optimiert)
 
-| Datei                | Wo es erscheint                                   |
-| -------------------- | ------------------------------------------------- |
-| `behandlung.jpg`     | Startseite – Abschnitt „Zuwendung, die man spürt" |
-| `massage.jpg`        | Leistungen – „Für alle Kassen & privat"           |
-| `praxis.jpg`         | Über uns – „Der Mensch im Mittelpunkt"            |
-| `team.jpg`           | Karriere – „Hier wirst du dich wohlfühlen"        |
-| `arbeit.jpg`         | Karriere – Hero                                   |
-| `galerie-1..6.jpg`   | Startseite – „Ein Ort zum Aufatmen" (Swipe)       |
+Die Pfade sind in `lib/site.ts` hinterlegt. Fotos einfach unter genau diesem Namen
+als **AVIF** (oder WebP/JPG) ablegen:
 
-Der Home-Hero ist eine 3D-Animation und braucht kein Foto.
+### Leistungen
+- `fassadenanstrich-berlin-altbau.avif`
+- `wohnung-streichen-berlin-innenanstrich.avif`
+- `lackierarbeiten-berlin-tueren-fenster.avif`
+- `designtapeten-berlin-tapezierer.avif`
+- `altbausanierung-berlin-stuckrestaurierung.avif`
+- `buero-streichen-berlin-gewerbe.avif`
+
+### Vorher / Nachher
+- `vorher-fassade-berlin.avif` · `nachher-fassade-berlin.avif`
+- `vorher-altbau-wohnzimmer.avif` · `nachher-altbau-wohnzimmer.avif`
+
+## Empfehlungen
+- Querformat 4:3 für Leistungs- und Vorher/Nachher-Bilder.
+- AVIF/WebP für kleine Dateigröße; Motiv scharf, gut ausgeleuchtet, Berlin-Bezug.
+- Alt-Texte sind bereits in `lib/site.ts` gepflegt (Keyword + Ort).

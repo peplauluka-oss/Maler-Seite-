@@ -1,208 +1,195 @@
 import Link from "next/link";
-import Photo from "@/components/Photo";
-import Stars from "@/components/Stars";
+import { site, services, districts, process, homeFaq, beforeAfter, whatsappLink } from "@/lib/site";
+import PaintHero from "@/components/PaintHero";
+import TiltCard from "@/components/TiltCard";
+import TestimonialSlider from "@/components/TestimonialSlider";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider";
+import FaqAccordion from "@/components/FaqAccordion";
+import QuoteForm from "@/components/QuoteForm";
+import CtaBanner from "@/components/CtaBanner";
 import Reveal from "@/components/Reveal";
-import SwipeGallery from "@/components/SwipeGallery";
-import DnaHero from "@/components/DnaHero";
-import FloralDecor from "@/components/FloralDecor";
-import { FadeUp, Parallax } from "@/components/Motion";
-import { services, site, testimonials, images, gallery } from "@/lib/site";
+import Stars from "@/components/Stars";
+import JsonLd, { faqPage } from "@/components/JsonLd";
 
-export default function HomePage() {
+const ratingStr = site.rating.toString().replace(".", ",");
+
+const swatches = [
+  { name: "Hague Blue", hex: "#31373f" },
+  { name: "Setting Plaster", hex: "#e5c8b8" },
+  { name: "Green Smoke", hex: "#79857b" },
+  { name: "Railings", hex: "#2b2e33" },
+  { name: "Dead Salmon", hex: "#b79b8b" },
+  { name: "Card Room Green", hex: "#6b6a56" },
+];
+
+export default function Home() {
   return (
     <>
-      {/* Cinematic 3D Hero */}
-      <section className="hero3d">
-        <DnaHero />
-        <FloralDecor />
-        <span className="orb orb--rose" />
-        <span className="orb orb--gold" />
-        <div className="container hero3d__inner">
-          <FadeUp className="hero3d__badge">
-            <span className="badge">
-              <Stars rating={site.rating} count={site.reviewCount} />
-            </span>
-          </FadeUp>
-          <FadeUp delay={0.08}>
-            <h1 className="hero3d__title">
-              In Bewegung.<br />
-              <span className="accent">Ganz bei sich.</span>
-            </h1>
-          </FadeUp>
-          <FadeUp delay={0.16}>
-            <p className="lead hero3d__lead">
-              Die Frauen-Praxis von {site.owner} in {site.address.district} –
-              wirksame Physiotherapie in einer warmen, wohltuenden Atmosphäre.
-              Spür den Unterschied vom ersten Atemzug an.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.24}>
-            <div className="hero__actions" style={{ justifyContent: "center" }}>
-              <Link href="/kontakt" className="btn btn--primary">
-                Termin vereinbaren
-              </Link>
-              <a href={`tel:${site.phoneHref}`} className="btn btn--ghost">
-                📞 {site.phone}
-              </a>
-            </div>
-          </FadeUp>
-          <FadeUp delay={0.32}>
-            <ul className="trust-row trust-row--center">
-              <li>🌸 Reines Frauen-Team</li>
-              <li>🤍 Zeit &amp; Zuwendung</li>
-              <li>♿ Barrierefrei</li>
-            </ul>
-          </FadeUp>
-        </div>
-        <div className="scroll-hint" aria-hidden>
-          <span>Scrollen</span>
-          <span className="scroll-hint__line" />
-        </div>
-      </section>
-
-      {/* Info bar */}
-      <div className="container">
-        <div className="infobar">
-          <div className="infobar__grid">
-            <div className="infobar__item">
-              <span aria-hidden>📍</span>
-              <div>
-                <strong>{site.address.street}</strong>
-                <span>{site.address.city}</span>
-              </div>
-            </div>
-            <div className="infobar__item">
-              <span aria-hidden>🕒</span>
-              <div>
-                <strong>Mo – Do 08 – 19 Uhr</strong>
-                <span>Fr bis 14 Uhr</span>
-              </div>
-            </div>
-            <div className="infobar__item">
-              <span aria-hidden>📞</span>
-              <div>
-                <strong>
-                  <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
-                </strong>
-                <span>Wir sind gern für Sie da</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Impressionen – Swipe-Galerie */}
-      <section className="section section--cream" style={{ paddingBottom: "1rem" }}>
-        <div className="container center">
-          <Reveal>
-            <span className="eyebrow">Einblicke</span>
-            <h2>Ein Ort zum Aufatmen</h2>
-            <p className="lead" style={{ marginBottom: "2rem" }}>
-              Gedämpftes Licht, warme Töne, echte Ruhe – tauchen Sie ein in die
-              Atmosphäre unserer Praxis.
-            </p>
-          </Reveal>
-        </div>
-        <SwipeGallery items={gallery} />
-      </section>
-
-      {/* Leistungen */}
-      <section className="section section--blush">
+      {/* HERO */}
+      <section className="hero">
+        <PaintHero />
         <div className="container">
-          <Reveal>
-            <div className="section__head center">
-              <span className="eyebrow">Unsere Leistungen</span>
-              <h2>Behandlung, die guttut</h2>
-              <p className="lead">
-                Von sanfter manueller Therapie über Lymphdrainage bis zur wohligen
-                Hot-Stone-Massage – wir finden den Weg, der sich für Sie richtig anfühlt.
-              </p>
-            </div>
-          </Reveal>
-          <div className="grid grid--3">
-            {services.slice(0, 6).map((s, i) => (
-              <Reveal key={s.slug} delay={(i % 3) * 90}>
-                <article className="card">
-                  <div className="card__icon" aria-hidden>
-                    {s.icon}
-                  </div>
-                  <h3>{s.title}</h3>
-                  <p>{s.short}</p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-          <div className="center" style={{ marginTop: "2.75rem" }}>
-            <Link href="/leistungen" className="btn btn--primary">
-              Alle Leistungen entdecken
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Value / split */}
-      <section className="section">
-        <div className="container split split--wide-media">
-          <div className="split__media">
-            <Parallax amount={50}>
-              <Photo
-                src={images.treatment}
-                alt="Sanfte manuelle Therapie in der Praxis Simone Rammelt"
-                icon="🤲"
-                ratio="5 / 4"
-              />
-            </Parallax>
-          </div>
-          <div className="split__body">
+          <div className="hero__inner">
             <Reveal>
-              <span className="eyebrow">Warum Praxis Rammelt</span>
-              <h2>Zuwendung, die man spürt</h2>
-              <ul className="check-list">
-                <li>
-                  <strong>Wir nehmen uns Zeit.</strong> Keine Hektik, kein Fließband –
-                  sondern echte Aufmerksamkeit für Sie.
-                </li>
-                <li>
-                  <strong>Sanft &amp; wirksam.</strong> Behandlungen, die Beweglichkeit
-                  und Kraft nachhaltig zurückbringen.
-                </li>
-                <li>
-                  <strong>Ein herzliches Frauen-Team.</strong> Acht Kolleginnen rund um
-                  Simone Rammelt – mit guter Laune und viel Feingefühl.
-                </li>
-                <li>
-                  <strong>Unkomplizierte Termine.</strong> Flexibel, kurzfristig, auf
-                  Wunsch als Hausbesuch.
-                </li>
-              </ul>
-              <Link href="/ueber-uns" className="btn btn--ghost">
-                Lernen Sie uns kennen
-              </Link>
+              <span className="eyebrow">Meisterbetrieb · Berlin · seit über {site.experienceYears} Jahren</span>
+            </Reveal>
+            <Reveal delay={80}>
+              <h1>
+                Maler in Berlin, die <span className="grad-text">Wert schaffen</span> – innen wie außen
+              </h1>
+            </Reveal>
+            <Reveal delay={160}>
+              <p className="hero__sub">
+                Malermeister Heußer bringt Fassaden, Altbauten und Wohnräume in ganz Berlin
+                zum Strahlen – sauber, termintreu und zum verbindlichen Festpreis.
+              </p>
+            </Reveal>
+            <Reveal delay={240}>
+              <div className="hero__cta">
+                <Link href="/kontakt" className="btn btn--primary btn--lg">Kostenloses Angebot in 24 h</Link>
+                <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--lg">☎ {site.phone}</a>
+              </div>
+            </Reveal>
+            <Reveal delay={320}>
+              <div className="trustrow">
+                <span className="trustrow__item">
+                  <Stars value={5} label={`${ratingStr} von 5 Sternen`} />
+                  <span><span className="num">{ratingStr}</span> / 5</span>
+                </span>
+                <span className="trustrow__sep" aria-hidden />
+                <span className="trustrow__item"><span className="num">{site.reviewCount}</span>&nbsp;Google-Bewertungen</span>
+                <span className="trustrow__sep" aria-hidden />
+                <span className="trustrow__item">Meisterbetrieb</span>
+                <span className="trustrow__sep" aria-hidden />
+                <span className="trustrow__item">Farrow &amp; Ball Partner</span>
+              </div>
             </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Steps */}
-      <section className="section section--sage">
+      {/* STAT-LEISTE */}
+      <section className="section--tight">
         <div className="container">
           <Reveal>
-            <div className="section__head center">
-              <span className="eyebrow">So einfach geht's</span>
-              <h2>In drei Schritten zu Ihrem Termin</h2>
+            <div className="stats">
+              <div className="stat"><div className="stat__num">{site.experienceYears}+</div><div className="stat__label">Jahre Erfahrung</div></div>
+              <div className="stat"><div className="stat__num">{ratingStr}★</div><div className="stat__label">Google-Rating</div></div>
+              <div className="stat"><div className="stat__num">{site.reviewCount}</div><div className="stat__label">Bewertungen</div></div>
+              <div className="stat"><div className="stat__num">2</div><div className="stat__label">Geschäftsstellen</div></div>
             </div>
           </Reveal>
-          <div className="grid grid--3 steps">
-            {[
-              { n: 1, t: "Melden Sie sich", d: "Telefonisch oder über unser Formular – ganz unkompliziert und schnell." },
-              { n: 2, t: "Termin erhalten", d: "Wir finden gemeinsam einen passenden, oft kurzfristigen Termin." },
-              { n: 3, t: "Aufatmen", d: "Sie starten Ihre Behandlung – sanft, professionell und wohltuend." },
-            ].map((s, i) => (
-              <Reveal key={s.n} delay={i * 110}>
-                <div className="step">
-                  <span className="step__num">{s.n}</span>
-                  <h3>{s.t}</h3>
-                  <p>{s.d}</p>
+        </div>
+      </section>
+
+      {/* LEISTUNGEN */}
+      <section className="section" id="leistungen">
+        <div className="container">
+          <div className="section__head">
+            <Reveal><span className="eyebrow">Leistungen</span></Reveal>
+            <Reveal delay={80}><h2>Alles aus einer Meisterhand</h2></Reveal>
+            <Reveal delay={160}>
+              <p className="lead">
+                Von der verwitterten Fassade bis zur edlen Designtapete: Wir lösen jedes
+                Malerproblem in Berlin – mit Materialien, die halten, und einer Ausführung, die man sieht.
+              </p>
+            </Reveal>
+          </div>
+          <div className="cards">
+            {services.map((s, i) => (
+              <Reveal key={s.slug} delay={i * 60}>
+                <Link href={`/leistungen/${s.slug}`} style={{ display: "block", height: "100%" }}>
+                  <TiltCard>
+                    <div className="card__icon" aria-hidden>{s.icon}</div>
+                    <h3>{s.title.split(" & ")[0].split(" (")[0]}</h3>
+                    <p>{s.teaser}</p>
+                    <span className="card__link">Mehr erfahren <span aria-hidden>→</span></span>
+                  </TiltCard>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PROBLEM → LÖSUNG → BEWEIS (Fassade) */}
+      <ProblemBlock service="fassadenanstrich" />
+      {/* Altbau (gespiegelt) */}
+      <ProblemBlock service="altbausanierung" reversed />
+      {/* Büro */}
+      <ProblemBlock service="buero-gewerbe" />
+
+      {/* FARROW & BALL */}
+      <section className="section fb">
+        <div className="container">
+          <div className="split">
+            <div>
+              <Reveal><span className="eyebrow">Premium-Differenzierer</span></Reveal>
+              <Reveal delay={80}><h2>Farrow &amp; Ball – Farbe auf einem anderen Niveau</h2></Reveal>
+              <Reveal delay={160}>
+                <p className="lead">
+                  Als Farrow &amp; Ball Partner arbeiten wir mit den pigmentreichsten Farben der Welt.
+                  Ihre unverwechselbare Tiefe, die matte Oberfläche und die lebendige Wirkung bei
+                  jedem Licht verwandeln Räume – gerade im Berliner Altbau.
+                </p>
+              </Reveal>
+              <Reveal delay={220}>
+                <div className="swatches" aria-hidden>
+                  {swatches.map((c) => (
+                    <span className="swatch" key={c.name} style={{ background: c.hex }}>
+                      <span>{c.name}</span>
+                    </span>
+                  ))}
+                </div>
+              </Reveal>
+              <Reveal delay={280}>
+                <ul className="checklist">
+                  <li>Persönliche Farbberatung, abgestimmt auf Licht &amp; Architektur</li>
+                  <li>Fachgerechte Verarbeitung für das volle Farbergebnis</li>
+                  <li>Komplette Farbkonzepte für Wohnung, Villa oder Fassade</li>
+                </ul>
+              </Reveal>
+              <Reveal delay={320}>
+                <Link href="/leistungen/innenraumgestaltung" className="btn btn--ghost">Zur Innenraumgestaltung</Link>
+              </Reveal>
+            </div>
+            <div className="split__media">
+              <Reveal delay={120}>
+                <div className="glass" style={{ padding: "2rem" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "0.7rem" }}>
+                    {swatches.map((c) => (
+                      <div key={c.name} style={{ borderRadius: "16px", overflow: "hidden", border: "1px solid var(--line)" }}>
+                        <div style={{ height: "72px", background: c.hex }} />
+                        <div style={{ padding: "0.6rem 0.8rem", fontSize: "0.82rem", color: "var(--text-soft)", fontFamily: "var(--display)" }}>{c.name}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{ margin: "1.2rem 0 0", fontSize: "0.85rem", color: "var(--muted)" }}>
+                    Farbtöne inspiriert von der Farrow &amp; Ball Kollektion.
+                  </p>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PROZESS */}
+      <section className="section">
+        <div className="container">
+          <div className="section__head center">
+            <Reveal><span className="eyebrow" style={{ justifyContent: "center" }}>So einfach geht's</span></Reveal>
+            <Reveal delay={80}><h2>In 3 Schritten zum Ergebnis</h2></Reveal>
+            <Reveal delay={160}><p className="lead" style={{ marginInline: "auto" }}>Kein Risiko, keine versteckten Kosten – planbar von der ersten Anfrage bis zur besenreinen Übergabe.</p></Reveal>
+          </div>
+          <div className="process">
+            {process.map((p, i) => (
+              <Reveal key={p.step} delay={i * 90}>
+                <div className="process__step glass">
+                  <div className="process__num">{p.step}</div>
+                  <div className="process__icon" aria-hidden>{p.icon}</div>
+                  <h3>{p.title}</h3>
+                  <p>{p.text}</p>
                 </div>
               </Reveal>
             ))}
@@ -210,82 +197,132 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* VORHER / NACHHER */}
       <section className="section">
         <div className="container">
-          <Reveal>
-            <div className="section__head center">
-              <span className="eyebrow">Herzensstimmen</span>
-              <h2>Das sagen unsere Patientinnen</h2>
-              <div className="center-stars">
-                <Stars rating={site.rating} count={site.reviewCount} />
-              </div>
-            </div>
-          </Reveal>
-          <div className="grid grid--3">
-            {testimonials.map((t, i) => (
-              <Reveal key={i} delay={i * 100}>
-                <figure className="quote-card">
-                  <div className="quote-card__mark" aria-hidden>
-                    &ldquo;
-                  </div>
-                  <blockquote>{t.quote}</blockquote>
-                  <figcaption>
-                    <strong>{t.author}</strong>
-                    <span>{t.source}</span>
-                  </figcaption>
-                </figure>
+          <div className="section__head">
+            <Reveal><span className="eyebrow">Ergebnisse zum Anfassen</span></Reveal>
+            <Reveal delay={80}><h2>Vorher / Nachher</h2></Reveal>
+            <Reveal delay={160}><p className="lead">Ziehen Sie den Regler und sehen Sie den Unterschied. (Projektfotos folgen – die Beispiele zeigen den Effekt.)</p></Reveal>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.3rem" }}>
+            {beforeAfter.map((b, i) => (
+              <Reveal key={i} delay={i * 90}>
+                <BeforeAfterSlider before={b.before} after={b.after} label={b.label} icon={b.icon} />
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Hiring banner */}
-      <section className="section section--cream">
+      {/* TESTIMONIALS */}
+      <section className="section" id="bewertungen">
         <div className="container">
-          <Reveal>
-            <div className="hiring-banner">
-              <div className="hiring-banner__body">
-                <span className="eyebrow eyebrow--light">Wir wachsen 🌱</span>
-                <h2>Werde Teil unseres Teams</h2>
-                <p>
-                  Du bist Physiotherapeutin und suchst einen Ort, an dem Wertschätzung,
-                  gute Laune und Zeit für Menschen keine Floskeln sind? Dann sollten
-                  wir uns kennenlernen.
-                </p>
-              </div>
-              <div className="hiring-banner__cta">
-                <Link href="/karriere" className="btn btn--primary">
-                  Zu den Vorteilen &amp; zur Bewerbung
+          <div className="section__head">
+            <Reveal><span className="eyebrow">Kundenstimmen</span></Reveal>
+            <Reveal delay={80}><h2>{ratingStr} ★ bei {site.reviewCount} Google-Bewertungen</h2></Reveal>
+            <Reveal delay={160}><p className="lead">Was Berliner Eigentümer, Mieter und Gewerbekunden über die Zusammenarbeit sagen – wischen Sie durch.</p></Reveal>
+          </div>
+          <Reveal delay={120}><TestimonialSlider /></Reveal>
+        </div>
+      </section>
+
+      {/* BEZIRKE */}
+      <section className="section">
+        <div className="container">
+          <div className="section__head">
+            <Reveal><span className="eyebrow">Vor Ort in Ihrem Kiez</span></Reveal>
+            <Reveal delay={80}><h2>Maler für ganz Berlin</h2></Reveal>
+            <Reveal delay={160}><p className="lead">Von Niederschönhausen und Köpenick aus in allen Bezirken für Sie im Einsatz. Finden Sie Ihren Kiez:</p></Reveal>
+          </div>
+          <Reveal delay={120}>
+            <div className="linkgrid">
+              {districts.map((d) => (
+                <Link key={d.slug} href={`/maler/${d.slug}`} className="linkcard">
+                  Maler {d.name} <span aria-hidden>→</span>
                 </Link>
-              </div>
+              ))}
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="section" style={{ paddingTop: 0 }}>
+      {/* FAQ */}
+      <section className="section" id="faq">
         <div className="container">
-          <Reveal>
-            <div className="cta">
-              <h2>Schenken Sie sich einen Moment Fürsorge</h2>
-              <p className="lead" style={{ margin: "0 auto 1.75rem", color: "rgba(255,255,255,0.9)" }}>
-                Vereinbaren Sie jetzt Ihren Termin – wir freuen uns von Herzen auf Sie.
-              </p>
-              <div className="hero__actions" style={{ justifyContent: "center" }}>
-                <Link href="/kontakt" className="btn btn--primary">
-                  Termin buchen
-                </Link>
-                <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--ghost-light">
-                  📞 {site.phone}
-                </a>
+          <div className="section__head">
+            <Reveal><span className="eyebrow">Häufige Fragen</span></Reveal>
+            <Reveal delay={80}><h2>Antworten, bevor Sie fragen</h2></Reveal>
+          </div>
+          <Reveal delay={120}><FaqAccordion items={homeFaq} /></Reveal>
+        </div>
+        <JsonLd data={faqPage(homeFaq)} />
+      </section>
+
+      {/* ANGEBOTS-FORMULAR */}
+      <section className="section" id="angebot">
+        <div className="container">
+          <div className="quote">
+            <div>
+              <span className="eyebrow">Kostenloses Angebot</span>
+              <h2>In 60 Sekunden zur Anfrage</h2>
+              <p className="lead">Sagen Sie uns kurz, worum es geht – wir melden uns innerhalb von 24 Stunden mit einer ersten Einschätzung und einem Termin für die kostenlose Besichtigung.</p>
+              <ul className="checklist">
+                <li>Unverbindlich &amp; kostenlos</li>
+                <li>Verbindlicher Festpreis nach Besichtigung</li>
+                <li>Antwort innerhalb von 24 Stunden</li>
+              </ul>
+              <div style={{ display: "flex", gap: "0.7rem", flexWrap: "wrap", marginTop: "1.4rem" }}>
+                <a href={`tel:${site.phoneHref}`} className="btn btn--ghost">☎ {site.phone}</a>
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn btn--whatsapp">WhatsApp</a>
               </div>
             </div>
-          </Reveal>
+            <QuoteForm />
+          </div>
         </div>
       </section>
+
+      <CtaBanner />
     </>
+  );
+}
+
+/* --- Problem → Lösung → Beweis Block (Server Component) --- */
+import { getService } from "@/lib/site";
+import Photo from "@/components/Photo";
+
+function ProblemBlock({ service, reversed = false }: { service: string; reversed?: boolean }) {
+  const s = getService(service);
+  if (!s) return null;
+  return (
+    <section className="section">
+      <div className="container">
+        <div className={`split ${reversed ? "split--rev" : ""}`}>
+          <div>
+            <Reveal>
+              <span className="problemcard"><span aria-hidden>⚠</span> {s.problem.split(" – ")[0].split(",")[0]}?</span>
+            </Reveal>
+            <Reveal delay={80}><h2>{s.title.split(" & ")[0].split(" (")[0]}</h2></Reveal>
+            <Reveal delay={140}><p className="lead">{s.solution}</p></Reveal>
+            <Reveal delay={200}>
+              <ul className="checklist">
+                {s.bullets.slice(0, 4).map((b) => <li key={b}>{b}</li>)}
+              </ul>
+            </Reveal>
+            <Reveal delay={240}><p className="proofquote">{s.proof}</p></Reveal>
+            <Reveal delay={280}>
+              <Link href={`/leistungen/${s.slug}`} className="btn btn--primary">Details &amp; Preise</Link>
+            </Reveal>
+          </div>
+          <div className="split__media">
+            <Reveal delay={120}>
+              <div className="media-frame">
+                <Photo src={s.image} alt={s.imageAlt} icon={s.icon} ratio="4 / 3" rounded={false} />
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
