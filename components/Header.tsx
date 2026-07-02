@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { href: "/", label: "Start" },
@@ -43,7 +42,6 @@ export default function Header() {
               {l.label}
             </Link>
           ))}
-          <ThemeToggle />
           <Link href="/kontakt" className="btn btn--primary" onClick={() => setOpen(false)}>
             Termin buchen
           </Link>
