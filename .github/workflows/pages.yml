@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - claude/heusser-maler-berlin-relaunch-374x66
+      - claude/physio-websiten-init-lr1lnm
   workflow_dispatch:
 
 permissions:
