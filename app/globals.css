@@ -718,3 +718,32 @@ html:has(.home) footer.footer { display: none; }
 .stars .star--off { color: var(--line-strong); }
 /* Icon-Ausrichtung in Buttons/Links */
 .btn svg, .nav__phone svg, .card__link svg, .info-list a svg { flex-shrink: 0; }
+
+/* ---------- Schwebende Karten: bild-dominierter Glas-Look (finale Version) ---------- */
+.floatcard__in {
+  position: relative; height: 100%; min-height: 380px; overflow: hidden;
+  border-radius: 26px; border: 1px solid rgba(255,255,255,0.18);
+  background: #14161d; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  display: block; padding: 0;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.floatcard__bg { position: absolute; inset: 0; z-index: 0; }
+.floatcard__bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Oben klar (Bild sichtbar), unten sanftes Glas + Verlauf für die Schrift */
+.floatcard__scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(11,12,16,0.02) 0%, rgba(11,12,16,0.10) 40%, rgba(11,12,16,0.58) 72%, rgba(11,12,16,0.90) 100%);
+  -webkit-backdrop-filter: blur(1.5px); backdrop-filter: blur(1.5px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.floatcard__content { position: relative; z-index: 2; height: 100%; min-height: 380px; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.6rem 1.7rem 1.8rem; }
+.floatcard__num { position: absolute; top: 1.3rem; left: 1.7rem; font-family: var(--display); font-weight: 700; font-size: 0.95rem; letter-spacing: 0.14em; color: rgba(255,255,255,0.9); text-shadow: 0 2px 12px rgba(0,0,0,0.7); }
+.floatcard__title { font-family: var(--display); font-weight: 700; font-size: 1.55rem; letter-spacing: -0.02em; color: #fff; margin: 0 0 0.5rem; text-shadow: 0 2px 16px rgba(0,0,0,0.65); }
+.floatcard__text { font-size: 0.95rem; line-height: 1.55; color: rgba(244,241,234,0.94); text-shadow: 0 1px 12px rgba(0,0,0,0.7); margin-bottom: 0.9rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.floatcard__link { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--copper-bright); font-family: var(--display); font-weight: 600; font-size: 0.95rem; text-shadow: 0 1px 10px rgba(0,0,0,0.6); }
+.floatcard__link span { transition: transform 0.3s var(--ease); }
+.floatcard:hover .floatcard__link span { transform: translateX(5px); }
+.floatcard:hover .floatcard__in { border-color: rgba(240,192,136,0.7); box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 42px rgba(224,168,106,0.28); }
+
+/* Nummer im Fluss ganz oben, Text-Block unten – keine Überlappung */
+.floatcard__num { position: static; top: auto; left: auto; margin: 0 0 auto; padding: 0; }
