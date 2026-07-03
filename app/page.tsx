@@ -1,292 +1,172 @@
 import Link from "next/link";
-import Photo from "@/components/Photo";
-import Icon from "@/components/Icon";
-import Stars from "@/components/Stars";
+import { site, homeFaq, whatsappLink } from "@/lib/site";
+import PaintJourney from "@/components/PaintJourney";
+import SectionProgress from "@/components/SectionProgress";
+import FloatingCards from "@/components/FloatingCards";
+import TestimonialSlider from "@/components/TestimonialSlider";
+import FaqAccordion from "@/components/FaqAccordion";
 import Reveal from "@/components/Reveal";
-import SwipeGallery from "@/components/SwipeGallery";
-import DnaHero from "@/components/DnaHero";
-import FloralDecor from "@/components/FloralDecor";
-import { FadeUp, Parallax } from "@/components/Motion";
-import { services, site, testimonials, images, gallery } from "@/lib/site";
+import Stars from "@/components/Stars";
+import Icon from "@/components/Icon";
+import JsonLd, { faqPage } from "@/components/JsonLd";
 
-export default function HomePage() {
+const ratingStr = site.rating.toString().replace(".", ",");
+
+const swatches = [
+  { name: "Hague Blue", hex: "#31373f" },
+  { name: "Setting Plaster", hex: "#e5c8b8" },
+  { name: "Green Smoke", hex: "#79857b" },
+  { name: "Railings", hex: "#2b2e33" },
+];
+
+const panelLabels = ["Start", "Erfahrung", "Leistungen", "Farrow & Ball", "Bewertungen", "Kontakt"];
+
+export default function Home() {
   return (
-    <>
-      {/* Cinematic 3D Hero */}
-      <section className="hero3d">
-        <DnaHero />
-        <FloralDecor />
-        <span className="orb orb--rose" />
-        <span className="orb orb--gold" />
-        <div className="container hero3d__inner">
-          <FadeUp className="hero3d__badge">
-            <span className="badge">
-              <Stars rating={site.rating} count={site.reviewCount} />
-            </span>
-          </FadeUp>
-          <FadeUp delay={0.08}>
-            <h1 className="hero3d__title">
-              In Bewegung.<br />
-              <span className="accent">Ganz bei sich.</span>
+    <div className="home">
+      {/* Cinematische 3D-Bühne, fix im Hintergrund – dreht sich mit dem Scroll */}
+      <PaintJourney />
+      <SectionProgress labels={panelLabels} />
+
+      {/* 1 — HERO */}
+      <section className="panel panel--hero" data-panel id="start">
+        <div className="container panel__in">
+          <Reveal><span className="eyebrow">Meisterbetrieb · Berlin · seit über {site.experienceYears} Jahren</span></Reveal>
+          <Reveal delay={80}>
+            <h1 className="panel__title">
+              Farbe, die <span className="grad-text">Räume verwandelt</span>.
             </h1>
-          </FadeUp>
-          <FadeUp delay={0.16}>
-            <p className="lead hero3d__lead">
-              Die Frauen-Praxis von {site.owner} in {site.address.district} –
-              wirksame Physiotherapie in einer warmen, wohltuenden Atmosphäre.
-              Spür den Unterschied vom ersten Atemzug an.
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="panel__lead">
+              Malermeister Heußer bringt Fassaden, Altbauten und Wohnräume in ganz Berlin
+              zum Strahlen – cinematic sauber, termintreu, zum Festpreis.
             </p>
-          </FadeUp>
-          <FadeUp delay={0.24}>
-            <div className="hero__actions" style={{ justifyContent: "center" }}>
-              <Link href="/kontakt" className="btn btn--primary">
-                Termin vereinbaren
-              </Link>
-              <a href={`tel:${site.phoneHref}`} className="btn btn--ghost">
-                <Icon name="phone" /> {site.phone}
-              </a>
+          </Reveal>
+          <Reveal delay={240}>
+            <div className="panel__cta">
+              <Link href="/kontakt" className="btn btn--primary btn--lg">Kostenloses Angebot in 24 h</Link>
+              <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--lg"><Icon name="phone" size={18} /> {site.phone}</a>
             </div>
-          </FadeUp>
-          <FadeUp delay={0.32}>
-            <ul className="trust-row trust-row--center">
-              <li><Icon name="flower" /> Reines Frauen-Team</li>
-              <li><Icon name="heart" /> Zeit &amp; Zuwendung</li>
-              <li><Icon name="accessible" /> Barrierefrei</li>
-            </ul>
-          </FadeUp>
-        </div>
-        <div className="scroll-hint" aria-hidden>
-          <span>Scrollen</span>
-          <span className="scroll-hint__line" />
+          </Reveal>
+          <Reveal delay={320}>
+            <div className="trustrow">
+              <span className="trustrow__item"><Stars value={5} label={`${ratingStr} von 5`} /> <span><span className="num">{ratingStr}</span>/5</span></span>
+              <span className="trustrow__sep" aria-hidden />
+              <span className="trustrow__item"><span className="num">{site.reviewCount}</span>&nbsp;Google-Bewertungen</span>
+              <span className="trustrow__sep" aria-hidden />
+              <span className="trustrow__item">Farrow &amp; Ball Partner</span>
+            </div>
+          </Reveal>
+          <span className="scroll-hint" aria-hidden>Swipe / Scroll <span>↓</span></span>
         </div>
       </section>
 
-      {/* Info bar */}
-      <div className="container">
-        <div className="infobar">
-          <div className="infobar__grid">
-            <div className="infobar__item">
-              <span aria-hidden><Icon name="pin" /></span>
-              <div>
-                <strong>{site.address.street}</strong>
-                <span>{site.address.city}</span>
-              </div>
-            </div>
-            <div className="infobar__item">
-              <span aria-hidden><Icon name="clock" /></span>
-              <div>
-                <strong>Mo – Do 08 – 19 Uhr</strong>
-                <span>Fr bis 14 Uhr</span>
-              </div>
-            </div>
-            <div className="infobar__item">
-              <span aria-hidden><Icon name="phone" /></span>
-              <div>
-                <strong>
-                  <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
-                </strong>
-                <span>Wir sind gern für Sie da</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Impressionen – Swipe-Galerie */}
-      <section className="section section--cream" style={{ paddingBottom: "1rem" }}>
-        <div className="container center">
-          <Reveal>
-            <span className="eyebrow">Einblicke</span>
-            <h2>Ein Ort zum Aufatmen</h2>
-            <p className="lead" style={{ marginBottom: "2rem" }}>
-              Gedämpftes Licht, warme Töne, echte Ruhe – tauchen Sie ein in die
-              Atmosphäre unserer Praxis.
+      {/* 2 — ERFAHRUNG / STORY */}
+      <section className="panel" data-panel id="erfahrung">
+        <div className="container panel__in panel__in--wide">
+          <Reveal><span className="eyebrow">Seit {site.foundedYear}</span></Reveal>
+          <Reveal delay={80}>
+            <h2 className="panel__title">
+              <span className="grad-text">{site.experienceYears} Jahre</span> Handwerk,<br />das man sieht.
+            </h2>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="panel__lead">
+              Hunderte sanierte Fassaden, restaurierte Stuckdecken und edle Farbkonzepte –
+              von Mitte bis Köpenick. Als Meisterbetrieb haften wir für Qualität und arbeiten,
+              als wäre es unser eigenes Zuhause.
             </p>
           </Reveal>
-        </div>
-        <SwipeGallery items={gallery} />
-      </section>
-
-      {/* Leistungen */}
-      <section className="section section--blush">
-        <div className="container">
-          <Reveal>
-            <div className="section__head center">
-              <span className="eyebrow">Unsere Leistungen</span>
-              <h2>Behandlung, die guttut</h2>
-              <p className="lead">
-                Von sanfter manueller Therapie über Lymphdrainage bis zur wohligen
-                Hot-Stone-Massage – wir finden den Weg, der sich für Sie richtig anfühlt.
-              </p>
+          <Reveal delay={240}>
+            <div className="statline">
+              <div className="statline__it"><b>{site.experienceYears}+</b><span>Jahre Erfahrung</span></div>
+              <div className="statline__it"><b style={{ display: "inline-flex", alignItems: "center", gap: "0.2rem" }}>{ratingStr}<Icon name="star" size={26} style={{ color: "var(--copper-bright)" }} /></b><span>bei {site.reviewCount} Bewertungen</span></div>
+              <div className="statline__it"><b>2</b><span>Geschäftsstellen</span></div>
+              <div className="statline__it"><b>100 %</b><span>Festpreis-Garantie</span></div>
             </div>
           </Reveal>
-          <div className="grid grid--3">
-            {services.slice(0, 6).map((s, i) => (
-              <Reveal key={s.slug} delay={(i % 3) * 90}>
-                <article className="card">
-                  <div className="card__icon" aria-hidden>
-                    <Icon name={s.icon} />
-                  </div>
-                  <h3>{s.title}</h3>
-                  <p>{s.short}</p>
-                </article>
+        </div>
+      </section>
+
+      {/* 3 — LEISTUNGEN (Swipe-Deck) */}
+      <section className="panel" data-panel id="leistungen">
+        <div className="container panel__in panel__in--wide">
+          <Reveal><span className="eyebrow">Leistungen</span></Reveal>
+          <Reveal delay={80}><h2 className="panel__title panel__title--sm">Alles aus einer Meisterhand</h2></Reveal>
+          <Reveal delay={140}><FloatingCards /></Reveal>
+        </div>
+      </section>
+
+      {/* 4 — FARROW & BALL */}
+      <section className="panel" data-panel id="farrow">
+        <div className="container panel__in panel__in--wide">
+          <div className="fb-split">
+            <div>
+              <Reveal><span className="eyebrow">Premium-Differenzierer</span></Reveal>
+              <Reveal delay={80}><h2 className="panel__title panel__title--sm">Farrow &amp; Ball – Farbe auf einem anderen Niveau</h2></Reveal>
+              <Reveal delay={160}>
+                <p className="panel__lead">
+                  Als Partner arbeiten wir mit den pigmentreichsten Farben der Welt. Ihre
+                  Tiefe und Lebendigkeit bei jedem Licht verwandeln gerade den Berliner Altbau.
+                </p>
               </Reveal>
-            ))}
-          </div>
-          <div className="center" style={{ marginTop: "2.75rem" }}>
-            <Link href="/leistungen" className="btn btn--primary">
-              Alle Leistungen entdecken
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Value / split */}
-      <section className="section">
-        <div className="container split split--wide-media">
-          <div className="split__media">
-            <Parallax amount={50}>
-              <Photo
-                src={images.treatment}
-                alt="Sanfte manuelle Therapie in der Praxis Simone Rammelt"
-                icon="hands"
-                ratio="5 / 4"
-              />
-            </Parallax>
-          </div>
-          <div className="split__body">
-            <Reveal>
-              <span className="eyebrow">Warum Praxis Rammelt</span>
-              <h2>Zuwendung, die man spürt</h2>
-              <ul className="check-list">
-                <li>
-                  <strong>Wir nehmen uns Zeit.</strong> Keine Hektik, kein Fließband –
-                  sondern echte Aufmerksamkeit für Sie.
-                </li>
-                <li>
-                  <strong>Sanft &amp; wirksam.</strong> Behandlungen, die Beweglichkeit
-                  und Kraft nachhaltig zurückbringen.
-                </li>
-                <li>
-                  <strong>Ein herzliches Frauen-Team.</strong> Acht Kolleginnen rund um
-                  Simone Rammelt – mit guter Laune und viel Feingefühl.
-                </li>
-                <li>
-                  <strong>Unkomplizierte Termine.</strong> Flexibel, kurzfristig, auf
-                  Wunsch als Hausbesuch.
-                </li>
-              </ul>
-              <Link href="/ueber-uns" className="btn btn--ghost">
-                Lernen Sie uns kennen
-              </Link>
+              <Reveal delay={220}>
+                <p className="proofquote" style={{ maxWidth: "44ch" }}>
+                  „Unsere Altbauwohnung wurde mit einem Farrow-&-Ball-Farbkonzept renoviert – einfach edel.“ – Google-Bewertung
+                </p>
+              </Reveal>
+              <Reveal delay={280}>
+                <Link href="/leistungen/innenraumgestaltung" className="btn btn--primary">Innenraumgestaltung entdecken</Link>
+              </Reveal>
+            </div>
+            <Reveal delay={160} className="fb-swatches">
+              {swatches.map((c) => (
+                <div key={c.name} className="fb-swatch" style={{ background: c.hex }}>
+                  <span>{c.name}</span>
+                </div>
+              ))}
             </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Steps */}
-      <section className="section section--sage">
-        <div className="container">
-          <Reveal>
-            <div className="section__head center">
-              <span className="eyebrow">So einfach geht's</span>
-              <h2>In drei Schritten zu Ihrem Termin</h2>
-            </div>
-          </Reveal>
-          <div className="grid grid--3 steps">
-            {[
-              { n: 1, t: "Melden Sie sich", d: "Telefonisch oder über unser Formular – ganz unkompliziert und schnell." },
-              { n: 2, t: "Termin erhalten", d: "Wir finden gemeinsam einen passenden, oft kurzfristigen Termin." },
-              { n: 3, t: "Aufatmen", d: "Sie starten Ihre Behandlung – sanft, professionell und wohltuend." },
-            ].map((s, i) => (
-              <Reveal key={s.n} delay={i * 110}>
-                <div className="step">
-                  <span className="step__num">{s.n}</span>
-                  <h3>{s.t}</h3>
-                  <p>{s.d}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+      {/* 5 — BEWERTUNGEN (Swipe) */}
+      <section className="panel" data-panel id="bewertungen">
+        <div className="container panel__in panel__in--wide">
+          <Reveal><span className="eyebrow">Kundenstimmen · zum Wischen</span></Reveal>
+          <Reveal delay={80}><h2 className="panel__title panel__title--sm" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>{ratingStr}<Icon name="star" size={30} style={{ color: "var(--copper-bright)" }} /> bei {site.reviewCount} Google-Bewertungen</h2></Reveal>
+          <Reveal delay={140}><TestimonialSlider /></Reveal>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section">
-        <div className="container">
-          <Reveal>
-            <div className="section__head center">
-              <span className="eyebrow">Herzensstimmen</span>
-              <h2>Das sagen unsere Patientinnen</h2>
-              <div className="center-stars">
-                <Stars rating={site.rating} count={site.reviewCount} />
-              </div>
+      {/* 6 — KONTAKT / CTA */}
+      <section className="panel panel--cta" data-panel id="kontakt">
+        <div className="container panel__in">
+          <Reveal><span className="eyebrow" style={{ justifyContent: "center" }}>Jetzt starten</span></Reveal>
+          <Reveal delay={80}><h2 className="panel__title">Bereit für frische Farbe?</h2></Reveal>
+          <Reveal delay={160}>
+            <p className="panel__lead" style={{ marginInline: "auto" }}>
+              Kostenloses Angebot in 24 Stunden – unverbindlich, mit verbindlichem Festpreis nach Besichtigung.
+            </p>
+          </Reveal>
+          <Reveal delay={240}>
+            <div className="panel__cta" style={{ justifyContent: "center" }}>
+              <Link href="/kontakt" className="btn btn--primary btn--lg">Kostenloses Angebot</Link>
+              <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--lg"><Icon name="phone" size={18} /> {site.phone}</a>
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn btn--whatsapp btn--lg"><Icon name="whatsapp" size={18} /> WhatsApp</a>
             </div>
           </Reveal>
-          <div className="grid grid--3">
-            {testimonials.map((t, i) => (
-              <Reveal key={i} delay={i * 100}>
-                <figure className="quote-card">
-                  <div className="quote-card__mark" aria-hidden>
-                    &ldquo;
-                  </div>
-                  <blockquote>{t.quote}</blockquote>
-                  <figcaption>
-                    <strong>{t.author}</strong>
-                    <span>{t.source}</span>
-                  </figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Hiring banner */}
-      <section className="section section--cream">
-        <div className="container">
-          <Reveal>
-            <div className="hiring-banner">
-              <div className="hiring-banner__body">
-                <span className="eyebrow eyebrow--light">Wir wachsen <Icon name="sprout" /></span>
-                <h2>Werde Teil unseres Teams</h2>
-                <p>
-                  Du bist Physiotherapeutin und suchst einen Ort, an dem Wertschätzung,
-                  gute Laune und Zeit für Menschen keine Floskeln sind? Dann sollten
-                  wir uns kennenlernen.
-                </p>
-              </div>
-              <div className="hiring-banner__cta">
-                <Link href="/karriere" className="btn btn--primary">
-                  Zu den Vorteilen &amp; zur Bewerbung
-                </Link>
-              </div>
-            </div>
+          <Reveal delay={300}>
+            <details className="home-faq">
+              <summary>Häufige Fragen ansehen</summary>
+              <div style={{ marginTop: "1.2rem" }}><FaqAccordion items={homeFaq} /></div>
+            </details>
           </Reveal>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <Reveal>
-            <div className="cta">
-              <h2>Schenken Sie sich einen Moment Fürsorge</h2>
-              <p className="lead" style={{ margin: "0 auto 1.75rem", color: "rgba(255,255,255,0.9)" }}>
-                Vereinbaren Sie jetzt Ihren Termin – wir freuen uns von Herzen auf Sie.
-              </p>
-              <div className="hero__actions" style={{ justifyContent: "center" }}>
-                <Link href="/kontakt" className="btn btn--primary">
-                  Termin buchen
-                </Link>
-                <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--ghost-light">
-                  <Icon name="phone" /> {site.phone}
-                </a>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-    </>
+      <JsonLd data={faqPage(homeFaq)} />
+    </div>
   );
 }

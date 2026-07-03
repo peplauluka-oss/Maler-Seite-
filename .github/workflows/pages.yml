@@ -1,9 +1,15 @@
 name: Deploy to GitHub Pages
 
+# Deployt die Maler-Seite via GitHub Pages. Der Pages-Unterpfad wird
+# automatisch aus dem Repo-Namen abgeleitet (next.config.mjs liest
+# GITHUB_REPOSITORY), z. B. …github.io/Physio-Websiten/.
+# Triggert auf `main`. GitHub Pages wird beim ersten Lauf automatisch
+# aktiviert (actions/configure-pages mit enablement: true).
+
 on:
   push:
     branches:
-      - claude/physio-websiten-init-lr1lnm
+      - main
   workflow_dispatch:
 
 permissions:
@@ -20,6 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: GitHub Pages aktivieren
+        uses: actions/configure-pages@v4
+        with:
+          enablement: true
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -29,6 +39,8 @@ jobs:
         env:
           GITHUB_PAGES: "true"
         run: npm run build
+      - name: Jekyll deaktivieren
+        run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out

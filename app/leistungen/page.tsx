@@ -1,93 +1,56 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Photo from "@/components/Photo";
-import Icon from "@/components/Icon";
+import { services, site } from "@/lib/site";
+import TiltCard from "@/components/TiltCard";
 import Reveal from "@/components/Reveal";
-import SceneBackground from "@/components/SceneBackground";
-import { services, images, site } from "@/lib/site";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import Icon, { serviceIconName } from "@/components/Icon";
+import CtaBanner from "@/components/CtaBanner";
 
 export const metadata: Metadata = {
-  title: "Leistungen",
+  title: { absolute: "Leistungen – Malerarbeiten in Berlin | Malermeister Heußer" },
   description:
-    "Unsere Leistungen: Manuelle Therapie, Marnitz-Therapie, Krankengymnastik, Lymphdrainage, Hot-Stone- & klassische Massage, Dorn, Brügger, Bobath, Wärme- und Elektrotherapie sowie Hausbesuche.",
+    "Alle Malerleistungen in Berlin: Fassadenanstrich, Wohnungs- & Innenanstrich, Lackierarbeiten, Tapezierarbeiten, Altbausanierung & Gewerbe. Vom Meisterbetrieb. Jetzt anfragen!",
+  alternates: { canonical: "/leistungen" },
 };
 
-export default function ServicesPage() {
+export default function LeistungenPage() {
   return (
-    <div className="subpage">
-      <SceneBackground />
+    <>
       <section className="page-header">
-        <span className="orb orb--rose" />
-        <span className="orb orb--sage" />
         <div className="container">
-          <span className="eyebrow">Unsere Leistungen</span>
-          <h1>Sanfte Wege zu mehr Wohlbefinden</h1>
-          <p className="lead" style={{ margin: "0 auto" }}>
-            Ein liebevoll ausgewähltes Spektrum aus Physiotherapie, manuellen
-            Techniken und wohltuenden Anwendungen – individuell auf Sie abgestimmt
-            und nach ärztlicher Verordnung.
-          </p>
+          <Breadcrumbs items={[{ name: "Start", url: "/" }, { name: "Leistungen", url: "/leistungen" }]} />
+          <Reveal><span className="eyebrow">Leistungen</span></Reveal>
+          <Reveal delay={80}><h1>Malerarbeiten in Berlin – vom Meisterbetrieb</h1></Reveal>
+          <Reveal delay={160}>
+            <p className="lead">
+              Ob witterungsfeste Fassade, edler Wohnungsanstrich oder denkmalgerechte Altbausanierung:
+              Malermeister Heußer liefert jede Leistung sauber, termintreu und zum verbindlichen Festpreis.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      <section className="section section--cream">
+      <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
-          <div className="grid grid--2">
+          <div className="cards">
             {services.map((s, i) => (
-              <Reveal key={s.slug} delay={(i % 2) * 90}>
-                <article className="card" id={s.slug}>
-                  <div className="card__icon" aria-hidden>
-                    <Icon name={s.icon} />
-                  </div>
-                  <h3>{s.title}</h3>
-                  <p>{s.description}</p>
-                </article>
+              <Reveal key={s.slug} delay={i * 60}>
+                <Link href={`/leistungen/${s.slug}`} style={{ display: "block", height: "100%" }}>
+                  <TiltCard>
+                    <div className="card__icon" aria-hidden><Icon name={serviceIconName(s.slug)} size={26} /></div>
+                    <h3>{s.title}</h3>
+                    <p>{s.teaser}</p>
+                    <span className="card__link">Zur Leistung <span aria-hidden>→</span></span>
+                  </TiltCard>
+                </Link>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section section--blush">
-        <div className="container split">
-          <div className="split__media">
-            <Reveal>
-              <Photo
-                src={images.massage}
-                alt="Wohltuende Massage in der Praxis Rammelt"
-                icon="spa"
-                ratio="4 / 3"
-              />
-            </Reveal>
-          </div>
-          <div className="split__body">
-            <span className="eyebrow">Gut zu wissen</span>
-            <h2>Für alle Kassen &amp; privat</h2>
-            <ul className="check-list">
-              <li>Wir behandeln nach ärztlicher Verordnung (Rezept).</li>
-              <li>Gesetzliche und private Krankenkassen sowie Selbstzahler:innen.</li>
-              <li>Barrierefreier Zugang zur Praxis.</li>
-              <li>Hausbesuche im näheren Umkreis nach Vereinbarung.</li>
-            </ul>
-            <Link href="/kontakt" className="btn btn--primary">
-              Termin anfragen
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--sage">
-        <div className="container center">
-          <h2>Nicht sicher, welche Behandlung passt?</h2>
-          <p className="lead" style={{ margin: "0 auto 1.5rem" }}>
-            Rufen Sie uns an – wir beraten Sie gern und finden gemeinsam die richtige
-            Therapie für Sie.
-          </p>
-          <a href={`tel:${site.phoneHref}`} className="btn btn--primary">
-            <Icon name="phone" /> {site.phone}
-          </a>
-        </div>
-      </section>
-    </div>
+      <CtaBanner title="Welche Leistung brauchen Sie?" text={`Rufen Sie an unter ${site.phone} oder fordern Sie Ihr kostenloses Angebot in 24 Stunden an.`} />
+    </>
   );
 }

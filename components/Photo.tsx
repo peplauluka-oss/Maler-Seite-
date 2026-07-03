@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
-import Icon from "./Icon";
+import Icon from "@/components/Icon";
 
 type Props = {
   src: string;
   alt: string;
-  /** Icon-Name, der im Verlauf angezeigt wird, solange kein Foto sichtbar ist */
-  icon?: string;
+  /** SVG-Icon, das im Verlauf angezeigt wird, solange kein Foto sichtbar ist */
+  icon?: ReactNode;
   className?: string;
   /** aspect-ratio, z. B. "4 / 3" */
   ratio?: string;
@@ -23,7 +23,7 @@ type Props = {
 export default function Photo({
   src,
   alt,
-  icon = "flower",
+  icon = <Icon name="roller" size={44} />,
   className = "",
   ratio = "4 / 3",
   rounded = true,
@@ -46,7 +46,7 @@ export default function Photo({
       style={{ aspectRatio: ratio }}
     >
       <span className="photo__icon" aria-hidden data-state={status}>
-        <Icon name={icon} />
+        {icon}
       </span>
       {status !== "fail" && (
         // eslint-disable-next-line @next/next/no-img-element
