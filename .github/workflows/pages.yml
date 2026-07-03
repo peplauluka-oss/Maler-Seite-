@@ -1,9 +1,10 @@
 name: Deploy to GitHub Pages
 
-# Kombiniertes Deployment: Physio-Seite bleibt an der Wurzel
-# (…/Physio-Websiten/), die Maler-Seite kommt in den Unterpfad
-# (…/Physio-Websiten/maler-heusser/). Beide werden in EIN Pages-Artefakt
-# gebaut und gemeinsam veröffentlicht.
+# Kombiniertes Deployment in EIN Pages-Artefakt:
+#   Maler-Seite  → Wurzel   …/Physio-Websiten/           (Standardziel)
+#   Physio-Seite → Unterpfad …/Physio-Websiten/physio/
+# So landet man beim „normalen" Aufruf immer auf der Maler-Seite; Physio
+# bleibt unter /physio/ erreichbar.
 
 on:
   push:
@@ -24,7 +25,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # ---- Maler-Seite (Unterpfad /maler-heusser) ----
+      # ---- Maler-Seite (Wurzel /Physio-Websiten/) ----
       - name: Checkout Maler-Branch
         uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,33 +33,34 @@ jobs:
           node-version: 20
       - name: Maler-Abhängigkeiten
         run: npm ci
-      - name: Maler-Seite bauen (Unterpfad)
+      - name: Maler-Seite bauen (Wurzel)
         env:
           GITHUB_PAGES: "true"
-          PAGES_BASE_PATH: "/Physio-Websiten/maler-heusser"
         run: npm run build
-      - name: Maler-Output einsammeln
+      - name: Maler-Output an die Wurzel
         run: |
-          mkdir -p combined/maler-heusser
-          cp -r out/. combined/maler-heusser/
+          mkdir -p combined
+          cp -r out/. combined/
           rm -rf out .next
 
-      # ---- Physio-Seite (Wurzel) ----
+      # ---- Physio-Seite (Unterpfad /physio/) ----
       - name: Checkout Physio-Branch
         uses: actions/checkout@v4
         with:
           ref: claude/physio-websiten-init-lr1lnm
           path: physio-src
-      - name: Physio bauen (Wurzel)
+      - name: Physio auf Unterpfad umstellen & bauen
         working-directory: physio-src
         env:
           GITHUB_PAGES: "true"
         run: |
+          sed -i 's#const repo = "Physio-Websiten";#const repo = "Physio-Websiten/physio";#' next.config.mjs
           npm ci
           npm run build
-      - name: Physio-Output an die Wurzel
+      - name: Physio-Output nach /physio
         run: |
-          cp -r physio-src/out/. combined/
+          mkdir -p combined/physio
+          cp -r physio-src/out/. combined/physio/
           touch combined/.nojekyll
 
       - name: Artefakt hochladen
