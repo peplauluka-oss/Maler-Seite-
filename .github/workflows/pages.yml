@@ -1,15 +1,15 @@
 name: Deploy to GitHub Pages
 
-# Kombiniertes Deployment in EIN Pages-Artefakt:
-#   Maler-Seite  → Wurzel   …/Physio-Websiten/           (Standardziel)
-#   Physio-Seite → Unterpfad …/Physio-Websiten/physio/
-# So landet man beim „normalen" Aufruf immer auf der Maler-Seite; Physio
-# bleibt unter /physio/ erreichbar.
+# Eigenständiges Deployment NUR der Maler-Seite in ihr eigenes Repository.
+# Der Pages-Unterpfad wird automatisch aus dem Repo-Namen abgeleitet
+# (next.config.mjs liest GITHUB_REPOSITORY), z. B. …github.io/Maler-Seite-/.
+# Triggert auf `main` – im Physio-Repo (anderer Branch) bleibt der Workflow
+# damit inaktiv und kann die Physio-Seite nicht mehr überschreiben.
 
 on:
   push:
     branches:
-      - claude/heusser-maler-berlin-relaunch-374x66
+      - main
   workflow_dispatch:
 
 permissions:
@@ -25,48 +25,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # ---- Maler-Seite (Wurzel /Physio-Websiten/) ----
-      - name: Checkout Maler-Branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Maler-Abhängigkeiten
-        run: npm ci
-      - name: Maler-Seite bauen (Wurzel)
+          cache: npm
+      - run: npm ci
+      - name: Build static site
         env:
           GITHUB_PAGES: "true"
         run: npm run build
-      - name: Maler-Output an die Wurzel
-        run: |
-          mkdir -p combined
-          cp -r out/. combined/
-          rm -rf out .next
-
-      # ---- Physio-Seite (Unterpfad /physio/) ----
-      - name: Checkout Physio-Branch
-        uses: actions/checkout@v4
+      - name: Jekyll deaktivieren
+        run: touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
         with:
-          ref: claude/physio-websiten-init-lr1lnm
-          path: physio-src
-      - name: Physio auf Unterpfad umstellen & bauen
-        working-directory: physio-src
-        env:
-          GITHUB_PAGES: "true"
-        run: |
-          sed -i 's#const repo = "Physio-Websiten";#const repo = "Physio-Websiten/physio";#' next.config.mjs
-          npm ci
-          npm run build
-      - name: Physio-Output nach /physio
-        run: |
-          mkdir -p combined/physio
-          cp -r physio-src/out/. combined/physio/
-          touch combined/.nojekyll
-
-      - name: Artefakt hochladen
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./combined
+          path: ./out
 
   deploy:
     needs: build
