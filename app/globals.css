@@ -642,3 +642,40 @@ html:has(.home) footer.footer { display: none; }
   .scroll-hint { display: none; } /* würde sonst mit der Trust-Zeile kollidieren */
   .panel--hero .panel__in { padding-bottom: 0.5rem; }
 }
+
+/* ---------- Schwebende 3D-Leistungskarten (Referenz: spree-glanz.de) ---------- */
+.floatwrap {
+  perspective: 1500px;
+  overflow: hidden;
+  margin-top: 2rem;
+  padding: 2rem 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.floattrack { display: flex; gap: 1.5rem; width: max-content; transform-style: preserve-3d; will-change: transform; }
+.floatcard {
+  flex: 0 0 auto; width: min(320px, 76vw); display: block;
+  transform-style: preserve-3d;
+  transform: rotateY(var(--ry, 0deg)) translateZ(var(--tz, 0px));
+  animation: floatbob 6.5s ease-in-out infinite;
+}
+.floatcard:nth-child(3n) { animation-delay: -2.2s; }
+.floatcard:nth-child(3n+1) { animation-delay: -4.4s; }
+@keyframes floatbob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+.floatcard__in {
+  position: relative; height: 100%; min-height: 300px; display: flex; flex-direction: column;
+  background: linear-gradient(165deg, rgba(30,34,44,0.95), rgba(18,20,27,0.95));
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem 1.8rem;
+  box-shadow: var(--shadow); backdrop-filter: blur(10px);
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.floatcard__title { font-family: var(--display); font-weight: 700; font-size: 1.4rem; letter-spacing: -0.02em; margin-bottom: 0.5rem; color: var(--text); }
+.floatcard__text { font-size: 0.96rem; color: var(--text-soft); flex: 1; }
+.floatcard:hover .floatcard__in { border-color: var(--copper); box-shadow: var(--shadow-lg), 0 0 34px rgba(224,168,106,0.18); }
+.floatcard .sw-card__num { top: 1.1rem; right: 1.3rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .floatwrap { overflow-x: auto; scrollbar-width: none; }
+  .floattrack { transform: none !important; }
+  .floatcard { transform: none !important; animation: none !important; }
+}

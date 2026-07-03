@@ -2,7 +2,7 @@ import Link from "next/link";
 import { site, homeFaq, whatsappLink } from "@/lib/site";
 import PaintJourney from "@/components/PaintJourney";
 import SectionProgress from "@/components/SectionProgress";
-import ServiceSwiper from "@/components/ServiceSwiper";
+import FloatingCards from "@/components/FloatingCards";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import FaqAccordion from "@/components/FaqAccordion";
 import Reveal from "@/components/Reveal";
@@ -91,9 +91,9 @@ export default function Home() {
       {/* 3 — LEISTUNGEN (Swipe-Deck) */}
       <section className="panel" data-panel id="leistungen">
         <div className="container panel__in panel__in--wide">
-          <Reveal><span className="eyebrow">Leistungen · zum Wischen</span></Reveal>
+          <Reveal><span className="eyebrow">Leistungen</span></Reveal>
           <Reveal delay={80}><h2 className="panel__title panel__title--sm">Alles aus einer Meisterhand</h2></Reveal>
-          <Reveal delay={140}><ServiceSwiper /></Reveal>
+          <Reveal delay={140}><FloatingCards /></Reveal>
         </div>
       </section>
 
