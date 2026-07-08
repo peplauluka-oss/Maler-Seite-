@@ -1,26 +1,52 @@
-name: Deploy to GitHub Pages (deaktiviert)
+name: Deploy to GitHub Pages
 
-# WICHTIG: Dieser `main`-Branch enthaelt die Maler-Seite, das Physio-Repo soll
-# aber ausschliesslich die Physiotherapie-Seite unter …/Physio-Websiten/
-# veroeffentlichen. Der fruehere Workflow hier hat die Maler-Seite an die
-# Wurzel deployt und damit die Physio-Seite ueberschrieben.
-#
-# Deshalb ist das automatische Deployment aus diesem Branch abgeschaltet.
-# Die Maler-Seite gehoert in ihr eigenes Repository (Maler-Seite-), wo sie
-# eine eigene Pages-URL (…/Maler-Seite-/) bekommt. Der fertige, eigenstaendige
-# Deploy-Workflow liegt im Branch claude/heusser-maler-berlin-relaunch-374x66.
-#
-# Es gibt bewusst keinen Trigger und keinen Deploy-Job mehr – dieser Workflow
-# tut nichts und kann die Physio-Seite nicht mehr verdraengen.
+# Eigenständiges Deployment NUR der Maler-Seite in ihr eigenes Repository.
+# Der Pages-Unterpfad wird automatisch aus dem Repo-Namen abgeleitet
+# (next.config.mjs liest GITHUB_REPOSITORY), z. B. …github.io/Maler-Seite-/.
+# Triggert auf `main` – im Physio-Repo (anderer Branch) bleibt der Workflow
+# damit inaktiv und kann die Physio-Seite nicht mehr überschreiben.
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
-  noop:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Hinweis
-        run: |
-          echo "Deployment aus dem main-Branch (Maler-Seite) ist deaktiviert."
-          echo "Die Maler-Seite bitte im eigenen Repo 'Maler-Seite-' veroeffentlichen."
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build static site
+        env:
+          GITHUB_PAGES: "true"
+        run: npm run build
+      - name: Jekyll deaktivieren
+        run: touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

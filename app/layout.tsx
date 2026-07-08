@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Sora, Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -20,6 +20,14 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
+  display: "swap",
+});
+// Editorial-Serifenschrift für große Display-Überschriften (Malerei-Atmosphäre).
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -62,7 +70,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`${sora.variable} ${inter.variable}`}>
+    <html lang="de" className={`${sora.variable} ${inter.variable} ${fraunces.variable}`}>
       <body>
         <noscript>
           <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>

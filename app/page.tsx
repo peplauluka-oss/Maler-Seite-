@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site, homeFaq, whatsappLink } from "@/lib/site";
-import PaintJourney from "@/components/PaintJourney";
+import PaintRollerHero from "@/components/PaintRollerHero";
+import PaintPalette from "@/components/PaintPalette";
 import SectionProgress from "@/components/SectionProgress";
 import FloatingCards from "@/components/FloatingCards";
 import TestimonialSlider from "@/components/TestimonialSlider";
@@ -24,40 +25,45 @@ const panelLabels = ["Start", "Erfahrung", "Leistungen", "Farrow & Ball", "Bewer
 export default function Home() {
   return (
     <div className="home">
-      {/* Cinematische 3D-Bühne, fix im Hintergrund – dreht sich mit dem Scroll */}
-      <PaintJourney />
       <SectionProgress labels={panelLabels} />
 
-      {/* 1 — HERO */}
+      {/* 1 — HERO mit Farbrollen-Reveal */}
       <section className="panel panel--hero" data-panel id="start">
         <div className="container panel__in">
-          <Reveal><span className="eyebrow">Meisterbetrieb · Berlin · seit über {site.experienceYears} Jahren</span></Reveal>
-          <Reveal delay={80}>
-            <h1 className="panel__title">
-              Farbe, die <span className="grad-text">Räume verwandelt</span>.
-            </h1>
-          </Reveal>
-          <Reveal delay={160}>
-            <p className="panel__lead">
-              Malermeister Heußer bringt Fassaden, Altbauten und Wohnräume in ganz Berlin
-              zum Strahlen – cinematic sauber, termintreu, zum Festpreis.
-            </p>
-          </Reveal>
-          <Reveal delay={240}>
-            <div className="panel__cta">
-              <Link href="/kontakt" className="btn btn--primary btn--lg">Kostenloses Angebot in 24 h</Link>
-              <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--lg"><Icon name="phone" size={18} /> {site.phone}</a>
+          <div className="herofold">
+            <div className="herofold__text">
+              <Reveal><span className="eyebrow">Meisterbetrieb · Berlin · seit über {site.experienceYears} Jahren</span></Reveal>
+              <Reveal delay={80}>
+                <h1 className="panel__title">
+                  Aus kahlen Wänden<br />wird <em>Ihr Zuhause</em>.
+                </h1>
+              </Reveal>
+              <Reveal delay={160}>
+                <p className="panel__lead">
+                  Malermeister Heußer bringt Fassaden, Altbauten und Wohnräume in ganz Berlin
+                  zum Strahlen – sauber, termintreu und zum Festpreis.
+                </p>
+              </Reveal>
+              <Reveal delay={240}>
+                <div className="panel__cta">
+                  <Link href="/kontakt" className="btn btn--primary btn--lg">Kostenloses Angebot in 24 h</Link>
+                  <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--lg"><Icon name="phone" size={18} /> {site.phone}</a>
+                </div>
+              </Reveal>
+              <Reveal delay={320}>
+                <div className="trustrow">
+                  <span className="trustrow__item"><Stars value={5} label={`${ratingStr} von 5`} /> <span><span className="num">{ratingStr}</span>/5</span></span>
+                  <span className="trustrow__sep" aria-hidden />
+                  <span className="trustrow__item"><span className="num">{site.reviewCount}</span>&nbsp;Google-Bewertungen</span>
+                  <span className="trustrow__sep" aria-hidden />
+                  <span className="trustrow__item">Farrow &amp; Ball Partner</span>
+                </div>
+              </Reveal>
             </div>
-          </Reveal>
-          <Reveal delay={320}>
-            <div className="trustrow">
-              <span className="trustrow__item"><Stars value={5} label={`${ratingStr} von 5`} /> <span><span className="num">{ratingStr}</span>/5</span></span>
-              <span className="trustrow__sep" aria-hidden />
-              <span className="trustrow__item"><span className="num">{site.reviewCount}</span>&nbsp;Google-Bewertungen</span>
-              <span className="trustrow__sep" aria-hidden />
-              <span className="trustrow__item">Farrow &amp; Ball Partner</span>
-            </div>
-          </Reveal>
+            <Reveal delay={120}>
+              <PaintRollerHero src="/images/wohnung-streichen-berlin-innenanstrich.jpg" />
+            </Reveal>
+          </div>
           <span className="scroll-hint" aria-hidden>Swipe / Scroll <span>↓</span></span>
         </div>
       </section>
@@ -79,12 +85,7 @@ export default function Home() {
             </p>
           </Reveal>
           <Reveal delay={240}>
-            <div className="statline">
-              <div className="statline__it"><b>{site.experienceYears}+</b><span>Jahre Erfahrung</span></div>
-              <div className="statline__it"><b style={{ display: "inline-flex", alignItems: "center", gap: "0.2rem" }}>{ratingStr}<Icon name="star" size={26} style={{ color: "var(--copper-bright)" }} /></b><span>bei {site.reviewCount} Bewertungen</span></div>
-              <div className="statline__it"><b>2</b><span>Geschäftsstellen</span></div>
-              <div className="statline__it"><b>100 %</b><span>Festpreis-Garantie</span></div>
-            </div>
+            <PaintPalette />
           </Reveal>
         </div>
       </section>
