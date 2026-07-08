@@ -27,45 +27,31 @@ export default function Home() {
     <div className="home">
       <SectionProgress labels={panelLabels} />
 
-      {/* 1 — HERO mit Farbrollen-Reveal */}
+      {/* 1 — HERO: vollflächiges Farbrollen-Intro */}
       <section className="panel panel--hero" data-panel id="start">
-        <div className="container panel__in">
-          <div className="herofold">
-            <div className="herofold__text">
-              <Reveal><span className="eyebrow">Meisterbetrieb · Berlin · seit über {site.experienceYears} Jahren</span></Reveal>
-              <Reveal delay={80}>
-                <h1 className="panel__title">
-                  Aus kahlen Wänden<br />wird <em>Ihr Zuhause</em>.
-                </h1>
-              </Reveal>
-              <Reveal delay={160}>
-                <p className="panel__lead">
-                  Malermeister Heußer bringt Fassaden, Altbauten und Wohnräume in ganz Berlin
-                  zum Strahlen – sauber, termintreu und zum Festpreis.
-                </p>
-              </Reveal>
-              <Reveal delay={240}>
-                <div className="panel__cta">
-                  <Link href="/kontakt" className="btn btn--primary btn--lg">Kostenloses Angebot in 24 h</Link>
-                  <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--lg"><Icon name="phone" size={18} /> {site.phone}</a>
-                </div>
-              </Reveal>
-              <Reveal delay={320}>
-                <div className="trustrow">
-                  <span className="trustrow__item"><Stars value={5} label={`${ratingStr} von 5`} /> <span><span className="num">{ratingStr}</span>/5</span></span>
-                  <span className="trustrow__sep" aria-hidden />
-                  <span className="trustrow__item"><span className="num">{site.reviewCount}</span>&nbsp;Google-Bewertungen</span>
-                  <span className="trustrow__sep" aria-hidden />
-                  <span className="trustrow__item">Farrow &amp; Ball Partner</span>
-                </div>
-              </Reveal>
-            </div>
-            <Reveal delay={120}>
-              <PaintRollerHero src="/images/wohnung-streichen-berlin-innenanstrich.jpg" />
-            </Reveal>
+        <PaintRollerHero />
+        <div className="container panel__in rhero__content">
+          <span className="eyebrow rhero__eyebrow">Meisterbetrieb · Berlin · seit über {site.experienceYears} Jahren</span>
+          <h1 className="panel__title rhero__title">
+            Aus kahlen Wänden<br />wird <em>Ihr Zuhause</em>.
+          </h1>
+          <p className="panel__lead rhero__lead">
+            Malermeister Heußer bringt Fassaden, Altbauten und Wohnräume in ganz Berlin
+            zum Strahlen – sauber, termintreu und zum Festpreis.
+          </p>
+          <div className="panel__cta rhero__cta">
+            <Link href="/kontakt" className="btn btn--primary btn--lg">Kostenloses Angebot in 24 h</Link>
+            <a href={`tel:${site.phoneHref}`} className="btn btn--ghost btn--lg"><Icon name="phone" size={18} /> {site.phone}</a>
           </div>
-          <span className="scroll-hint" aria-hidden>Swipe / Scroll <span>↓</span></span>
+          <div className="trustrow rhero__trust">
+            <span className="trustrow__item"><Stars value={5} label={`${ratingStr} von 5`} /> <span><span className="num">{ratingStr}</span>/5</span></span>
+            <span className="trustrow__sep" aria-hidden />
+            <span className="trustrow__item"><span className="num">{site.reviewCount}</span>&nbsp;Google-Bewertungen</span>
+            <span className="trustrow__sep" aria-hidden />
+            <span className="trustrow__item">Farrow &amp; Ball Partner</span>
+          </div>
         </div>
+        <span className="scroll-hint" aria-hidden>Swipe / Scroll <span>↓</span></span>
       </section>
 
       {/* 2 — ERFAHRUNG / STORY */}
