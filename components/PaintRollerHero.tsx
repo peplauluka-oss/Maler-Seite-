@@ -83,7 +83,13 @@ export default function PaintRollerHero({ children }: { children: ReactNode }) {
           {/* Ebene 3: kahle Wand */}
           <div className="rhero__wall" />
 
-          {/* Ebene 4: der wachsende Farbfleck mit Headline */}
+          {/* Ebene 4: fotoreale Farbrolle – reitet auf der wachsenden Farbkante */}
+          <div className="rollwrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="rollimg" src={asset("/images/hero/roller.png")} alt="" />
+          </div>
+
+          {/* Ebene 5: der wachsende Farbfleck mit Headline */}
           <div className="patchwrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="patch" src={asset("/images/hero/paint-patch.png")} alt="" />

@@ -948,8 +948,9 @@ html:has(.home) footer.footer { display: none; }
 .herostage[data-p2] .rhero__wall { opacity: 0; transition: opacity 0.9s ease 0.5s; }
 
 /* ---------- Farbfleck mit Headline ---------- */
+.herostage { --patchH: 82svh; --patchTop: 9svh; }
 .patchwrap {
-  position: absolute; z-index: 3; top: 9svh; left: 50%; height: 82svh;
+  position: absolute; z-index: 3; top: var(--patchTop); left: 50%; height: var(--patchH);
   aspect-ratio: 2 / 3; transform: translateX(-50%);
   clip-path: inset(-2% -6% 102% -6%);
   transition: clip-path 2.1s var(--paintEase) 0.1s, opacity 0.7s ease, transform 0.7s ease;
@@ -976,6 +977,23 @@ html:has(.home) footer.footer { display: none; }
   font-size: clamp(1.5rem, 3.4vw, 3rem); line-height: 1.12; margin: 0;
   text-shadow: 0 2px 22px rgba(90,30,0,0.35);
 }
+
+/* ---------- fotoreale Farbrolle (reitet auf der Farbkante) ---------- */
+.rollwrap {
+  position: absolute; z-index: 4; left: 50%;
+  width: calc(var(--patchH) * 0.6667 / 0.6785);
+  top: calc(var(--patchTop) + 1.2svh);
+  transform: translate(-44.18%, -23.39%);
+  transition: top 2.1s var(--paintEase) 0.1s, opacity 0.45s ease;
+  will-change: top;
+  pointer-events: none;
+}
+.rollimg { width: 100%; height: auto; display: block; }
+.herostage[data-p1] .rollwrap { top: calc(var(--patchTop) + var(--patchH) + 2svh); }
+.herostage[data-p2] .rollwrap { opacity: 0; }
+/* minimales Arbeitswackeln, solange gestrichen wird */
+.herostage[data-p1]:not([data-p2]) .rollimg { animation: rollwob 0.6s ease-in-out infinite alternate; }
+@keyframes rollwob { from { transform: rotate(-0.6deg); } to { transform: rotate(0.6deg); } }
 
 /* ---------- Caption ---------- */
 .rhero__caption {
@@ -1011,10 +1029,10 @@ html:has(.home) footer.footer { display: none; }
 .herostage .btn--ghost:hover { background: rgba(255,255,255,0.24); border-color: #fff; color: #fff; }
 
 @media (max-width: 720px) {
-  .patchwrap { height: 66svh; top: 12svh; }
+  .herostage { --patchH: 54svh; --patchTop: 13svh; }
   .rhero__caption { top: 36%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .heroscroll { height: 100svh; }
-  .patchwrap, .rhero__wall, .rhero__caption { display: none !important; }
+  .patchwrap, .rollwrap, .rhero__wall, .rhero__caption { display: none !important; }
 }
