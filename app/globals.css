@@ -902,11 +902,11 @@ html:has(.home) footer.footer { display: none; }
 .herostage {
   position: sticky; top: 0; height: 100vh; height: 100svh;
   overflow: hidden; display: flex; align-items: flex-end;
-  --bandW: min(46vw, 520px);
+  --bandW: min(34vw, 430px);
   --paintEase: cubic-bezier(0.6, 0.04, 0.32, 1);
   --openEase: cubic-bezier(0.66, 0, 0.22, 1);
 }
-@media (max-width: 720px) { .herostage { --bandW: 62vw; } }
+@media (max-width: 720px) { .herostage { --bandW: 56vw; } }
 .rhero { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
 /* Licht-Schleier oben – Header bleibt in allen Phasen lesbar */
 .rhero::after {
@@ -965,57 +965,44 @@ html:has(.home) footer.footer { display: none; }
 .band {
   position: absolute; top: 0; bottom: 0; left: 50%; z-index: 3;
   width: var(--bandW); transform: translateX(-50%);
-  transition: width 1.2s cubic-bezier(0.55, 0.05, 0.35, 1);
+  transition: width 1.4s cubic-bezier(0.55, 0.05, 0.35, 1);
 }
 .herostage[data-p2] .band { width: 102vw; }
-/* Reveal beim Streichen: Clip fährt mit der Rolle nach unten */
+/* Reveal beim Streichen: Clip faehrt mit der Rolle nach unten */
 .bandclip {
   position: absolute; inset: 0;
   clip-path: inset(13% 0 87.4% 0);
-  transition: clip-path 1.55s var(--paintEase) 0.15s;
+  transition: clip-path 1.65s var(--paintEase) 0.15s;
 }
 .herostage[data-p1] .bandclip { clip-path: inset(13% 0 -2% 0); }
-/* nach dem Streichen Clip seitlich freigeben, damit die Hälften rausgleiten können */
-.herostage[data-p2] .bandclip { clip-path: inset(0 -60vw -2% -60vw); transition: clip-path 0.9s ease; }
-.half {
-  position: absolute; top: 0; bottom: 0; width: 50%;
-  background: linear-gradient(180deg, #cf6234 0%, #b44e26 55%, #9c421c 100%);
-  transition: transform 1.7s var(--openEase) 0.1s;
+.herostage[data-p2] .bandclip { clip-path: inset(-2% 0 -2% 0); transition: clip-path 0.9s ease; }
+.paintlayer {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  transition: opacity 0.8s ease;
 }
-.half--l { left: 0; } .half--r { right: 0; }
-/* zarte Rollspuren auf der frischen Farbe */
-.half::before {
-  content: ""; position: absolute; inset: 0;
-  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 26px, rgba(0,0,0,0.02) 26px 52px);
+/* Farbschicht weicht dem fertig eingeblendeten Vorhang */
+.herostage[data-p2] .paintlayer { opacity: 0; transition: opacity 0.7s ease 1.15s; }
+/* Vorhang-Haelften: morphen in Phase 2 ein, oeffnen in Phase 3 */
+.curt {
+  position: absolute; top: 0; bottom: 0; width: 50%; height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 1.9s var(--openEase) 0.1s;
 }
-/* Stofffalten – morphen in Phase 2 weich ein */
-.half::after {
-  content: ""; position: absolute; inset: 0; opacity: 0;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0) 12%, rgba(0,0,0,0.10) 78%, rgba(0,0,0,0.22) 100%),
-    repeating-linear-gradient(90deg,
-      rgba(0,0,0,0.16) 0px, rgba(0,0,0,0) 16px, rgba(0,0,0,0) 30px,
-      rgba(255,255,255,0.13) 40px, rgba(255,255,255,0) 52px,
-      rgba(0,0,0,0.10) 68px, rgba(0,0,0,0) 82px);
-  transition: opacity 1.2s ease 0.25s;
-}
-.herostage[data-p2] .half::after { opacity: 1; }
-/* Öffnen in Phase 3 */
-.herostage[data-p3] .half--l { transform: translateX(-103%); }
-.herostage[data-p3] .half--r { transform: translateX(103%); }
+.curt--l { left: 0; } .curt--r { right: 0; }
+.herostage[data-p2] .curt { opacity: 1; transition: opacity 1.25s ease 0.3s, transform 1.9s var(--openEase) 0.1s; }
+/* oeffnen – ein schmaler Rest bleibt als Rahmen an den Raendern stehen */
+.herostage[data-p3] .curt--l { transform: translateX(-94%); }
+.herostage[data-p3] .curt--r { transform: translateX(94%); }
 
-/* nasse Farbkante + Tropfen – nur an der Bahn, fährt mit der Rolle */
+/* nasse Front + Tropfen – nur an der Bahn, faehrt mit der Rolle */
 .bandedge {
-  position: absolute; left: -2px; right: -2px; height: 9px; z-index: 4;
-  transform: translateY(-50%); opacity: 0; border-radius: 5px; top: 13%;
-  background: linear-gradient(90deg, #9c421c, #e0894f, #9c421c);
-  box-shadow: 0 5px 16px rgba(157,66,28,0.5);
-  transition: top 1.55s var(--paintEase) 0.15s, opacity 0.3s ease;
+  position: absolute; left: -2%; right: -2%; height: 60px; z-index: 4;
+  top: 13%; transform: translateY(-30%); opacity: 0;
+  transition: top 1.65s var(--paintEase) 0.15s, opacity 0.3s ease;
 }
+.bandedge svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 4px 10px rgba(157,66,28,0.35)); }
 .herostage[data-p1] .bandedge { top: 102%; opacity: 1; }
 .herostage[data-p2] .bandedge { opacity: 0; transition: opacity 0.35s ease; }
-.drip { position: absolute; top: 6px; width: 9px; border-radius: 0 0 6px 6px; background: linear-gradient(180deg, #c86134, #9c421c); }
-.drip--1 { left: 18%; height: 20px; } .drip--2 { left: 55%; height: 32px; } .drip--3 { left: 82%; height: 15px; }
 
 /* ---------- Vorhangstange ---------- */
 .curtainrod {
@@ -1028,20 +1015,20 @@ html:has(.home) footer.footer { display: none; }
 .herostage[data-p2] .curtainrod { opacity: 1; transform: translateY(0); }
 .herostage:not([data-p2]) .curtainrod { transition-delay: 0s; }
 
-/* ---------- die kleine Farbrolle ---------- */
+/* ---------- die Farbrolle (Walze = Bahnbreite) ---------- */
 .rroller {
   position: absolute; z-index: 6; top: 15%; left: 50%;
-  width: min(190px, 24vw);
-  transform: translate(-40%, -56%);
-  filter: drop-shadow(0 10px 14px rgba(60,40,20,0.35));
-  transition: top 1.7s var(--paintEase), opacity 0.4s ease;
+  width: calc(var(--bandW) * 1.5);
+  transform: translate(-41.67%, -23.5%);
+  filter: drop-shadow(0 12px 18px rgba(60,40,20,0.35));
+  transition: top 1.65s var(--paintEase) 0.15s, opacity 0.4s ease;
 }
 .rroller svg { width: 100%; height: auto; display: block; }
 .herostage[data-p1] .rroller { top: 103%; }
 .herostage[data-p2] .rroller { opacity: 0; }
 /* leichtes Wackeln, solange gestrichen wird */
 .herostage[data-p1]:not([data-p2]) .rroller svg { animation: rwob 0.55s ease-in-out infinite alternate; }
-@keyframes rwob { from { transform: rotate(-1.2deg); } to { transform: rotate(1.2deg); } }
+@keyframes rwob { from { transform: rotate(-1deg); } to { transform: rotate(1deg); } }
 
 /* ---------- Zwischen-Caption ---------- */
 .rhero__caption {
@@ -1084,4 +1071,17 @@ html:has(.home) footer.footer { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .heroscroll { height: 100svh; }
   .rroller, .bandedge, .rhero__caption { display: none !important; }
+}
+
+/* ---------- Raum-Detailschicht: Kontaktschatten & Bild ---------- */
+.room__chair::after, .room__plant::after, .room__lamp::after {
+  content: ""; position: absolute; left: 50%; bottom: -3.5%; width: 116%; height: 9%;
+  transform: translateX(-50%); border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(60,30,10,0.28), rgba(60,30,10,0) 70%);
+}
+.room__frame::after {
+  content: ""; position: absolute; inset: 9px;
+  background:
+    linear-gradient(180deg, #e8c9a0 0%, #d9a875 46%, #b97848 47%, #9c5c34 100%);
+  border-radius: 2px;
 }
